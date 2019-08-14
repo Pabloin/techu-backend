@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: Techu Open API Bank
+  description: Open API Bank
+  version: '1.0.0'
+paths:
+  /user:
+    post:
+      x-swagger-router-controller: User
+      operationId: "createUser"
+      tags:
+      - "user"
+      summary: "Crea un usuario"
+      description: "Alta de un usuario con credenciales de login validas"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Crear objeto usuario"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "Operación exitosa"
+  /user/login:
+    get:
+      x-swagger-router-controller: User
+      operationId: "loginUser"
+      tags:
+      - "user"
+      summary: "Login del usuario en el sistema"
+      description: ""
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "Nombre del usuario para el login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "Password del usuario sin encriptar"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "operacion exitosa"
+          headers:
+            X-Rate-Limit:
+              type: "integer"
+              format: "int32"
+              description: "Invocaciones permitidas por el usuario por hora"
+            X-Expires-After:
+              type: "string"
+              format: "date-time"
+              description: "date in UTC cuando el token"
+          schema:
+            type: "string"
+        400:
+          description: "Inválido Usuario o Password ingredo."
+  /user/logout:
+    get:
+      x-swagger-router-controller: User
+      operationId: "logoutUser"
+      tags:
+      - "user"
+      summary: "Logout del usuario del sistema"
+      description: ""
+      parameters: []
+      responses:
+        default:
+          description: "Logout exitoso."
+definitions:
+  User:
+    type: "object"
+    properties:
+      userId:
+        type: "integer"
+      username:
+        type: "string"
+      password:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      isLogged:
+        type: "boolean"
+        default: false

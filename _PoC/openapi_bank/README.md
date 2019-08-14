@@ -1,0 +1,1 @@
+# Based on https://developers.redhat.com/blog/2019/01/14/building-a-node-js-service-using-the-api-first-approach/
