@@ -13,12 +13,12 @@ paths:
       summary: "Crea un usuario"
       description: "Alta de un usuario con credenciales de login validas"
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Crear objeto usuario"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
+       - name: "body"
+         in:  "body"
+         description: "Crear objeto usuario"
+         required: true
+         schema:
+           $ref: "#/definitions/User"
       responses:
         default:
           description: "Operación exitosa"
@@ -35,27 +35,33 @@ paths:
         in: "query"
         description: "Nombre del usuario para el login"
         required: true
-        type: "string"
+        schema:
+          type: "string"
       - name: "password"
         in: "query"
         description: "Password del usuario sin encriptar"
         required: true
-        type: "string"
+        schema:
+          type: "string"
       responses:
-        200:
+        '200':
           description: "operacion exitosa"
+          content:
+            application/json:
+              schema:
+                type: "string"
           headers:
             X-Rate-Limit:
-              type: "integer"
-              format: "int32"
+              schema:
+                type: "integer"
+                format: "int32"
               description: "Invocaciones permitidas por el usuario por hora"
             X-Expires-After:
-              type: "string"
-              format: "date-time"
+              schema:
+                type: "string"
+                format: "date-time"
               description: "date in UTC cuando el token"
-          schema:
-            type: "string"
-        400:
+        '400':
           description: "Inválido Usuario o Password ingredo."
   /user/logout:
     get:
@@ -69,7 +75,8 @@ paths:
       responses:
         default:
           description: "Logout exitoso."
-definitions:
+components:
+ schemas:
   User:
     type: "object"
     properties:
