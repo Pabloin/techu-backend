@@ -7,88 +7,121 @@ paths:
   /user:
     post:
       x-swagger-router-controller: User
-      operationId: "createUser"
+      operationId: createUser
       tags:
-      - "user"
-      summary: "Crea un usuario"
-      description: "Alta de un usuario con credenciales de login validas"
-      parameters:
-       - name: "body"
-         in:  "body"
-         description: "Crear objeto usuario"
-         required: true
-         schema:
-           $ref: "#/definitions/User"
+        - /user
+      summary: Crea un usuario
+      description: Alta de un usuario con credenciales de login validas
+      requestBody:
+        required: true
+        description: Objecto JSON que contiene un usuario
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
       responses:
         default:
-          description: "Operación exitosa"
+          description: Operación exitosa
   /user/login:
     get:
       x-swagger-router-controller: User
-      operationId: "loginUser"
+      operationId: loginUser
       tags:
-      - "user"
-      summary: "Login del usuario en el sistema"
+        - /user
+      summary: Login del usuario en el sistema
       description: ""
       parameters:
-      - name: "username"
-        in: "query"
-        description: "Nombre del usuario para el login"
+      - name: username
+        in: query
+        description: Nombre del usuario para el login
         required: true
         schema:
-          type: "string"
-      - name: "password"
-        in: "query"
-        description: "Password del usuario sin encriptar"
+          type: string
+      - name: password
+        in: query
+        description: Password del usuario sin encriptar
         required: true
         schema:
-          type: "string"
+          type: string
       responses:
         '200':
-          description: "operacion exitosa"
+          description: operacion exitosa
           content:
             application/json:
               schema:
-                type: "string"
+                type: string
           headers:
             X-Rate-Limit:
               schema:
-                type: "integer"
-                format: "int32"
-              description: "Invocaciones permitidas por el usuario por hora"
+                type: integer
+                format: int32
+              description: Invocaciones permitidas por el usuario por hora
             X-Expires-After:
               schema:
-                type: "string"
-                format: "date-time"
-              description: "date in UTC cuando el token"
+                type: string
+                format: date-time
+              description: date in UTC cuando el token
         '400':
-          description: "Inválido Usuario o Password ingredo."
+          description: Inválido Usuario o Password ingredo.
   /user/logout:
     get:
       x-swagger-router-controller: User
-      operationId: "logoutUser"
+      operationId: logoutUser
       tags:
-      - "user"
-      summary: "Logout del usuario del sistema"
+        - /user
+      summary: Logout del usuario del sistema
       description: ""
       parameters: []
       responses:
         default:
-          description: "Logout exitoso."
+          description: Logout exitoso.
 components:
   schemas:
     User:
       properties:
         userId:
-          type: "integer"
+          type: integer
         username:
-          type: "string"
+          type: string
         password:
-          type: "string"
+          type: string
         firstName:
-          type: "string"
+          type: string
         lastName:
-          type: "string"
+          type: string
         isLogged:
-          type: "boolean"
+          type: boolean
           default: false
+    Account:
+      properties:
+        userId:
+          type: integer
+        accountId:
+          type: integer
+        accountType:
+          type: string
+        accountBranch:
+          type: string
+        accountNumber:
+          type: string
+        accountDV:
+          type: string
+        accountCurrency:
+          type: string
+        accountBalance:
+          type: integer
+    Product:
+      properties:
+        productId: 
+          type: integer
+        productCode:
+          type: string
+        productDescription: 
+          type: string
+        productLabel: 
+          type: string
+        productCurrency: 
+          type: string
+        productAmount: 
+          type: integer
+
