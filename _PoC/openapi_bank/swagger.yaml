@@ -3,6 +3,10 @@ info:
   title: Techu Open API Bank
   description: Open API Bank
   version: '1.0.0'
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Pabloin/TuOpenBank/1.0.0
 paths:
   /user:
     post:
@@ -62,7 +66,11 @@ paths:
                 format: date-time
               description: date in UTC cuando el token
         '400':
-          description: Inválido Usuario o Password ingredo.
+          description: Credenciales de autenticación invalidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /user/logout:
     get:
       x-swagger-router-controller: User
@@ -75,6 +83,34 @@ paths:
       responses:
         default:
           description: Logout exitoso.
+  /account/{accountId}:
+    get:
+      x-swagger-router-controller: Account
+      operationId: getAccount
+      tags:
+        - /account
+      summary: Account detail
+      description: Retorna la informacion de una cuenta
+      parameters:
+        - name: accountId
+          in: path
+          description: Id de la cuenta
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: retorna account info.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: Credenciales de autenticación invalidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     User:
@@ -124,4 +160,34 @@ components:
           type: string
         productAmount: 
           type: integer
-
+    Transaction:
+      properties:
+        transactionId:
+          type: integer
+        userId:
+          type: integer
+        accountId:
+          type: integer
+        transactionCurrency:
+          type: string
+        transactionBalance:
+          type: integer
+        timestamp:
+          type: string
+    Error:
+      type: object
+      description: Default template para el mensaje de error.
+      required:
+      - code
+      - message
+      - description
+      properties:
+        code:
+          type: integer
+          description: Codigo Unico de mensaje de error.
+        message:
+          type: string
+          description: Mensaje de error breve.
+        description:
+          type: string
+          description: Mensaje de error detallado.
