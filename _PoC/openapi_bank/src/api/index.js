@@ -3,6 +3,9 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const config = require('../lib/config');
 const logger = require('../lib/logger');
+const mongoose = require('mongoose');
+
+require('dotenv').config({path: './.env'})
 
 const log = logger(config.logger);
 const app = express();
