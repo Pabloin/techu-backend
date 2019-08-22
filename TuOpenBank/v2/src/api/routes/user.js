@@ -8,6 +8,10 @@ const router = new express.Router();
  * Alta de un usuario con credenciales de login validas
  */
 router.post('/', async (req, res, next) => {
+
+  console.log(`User POST queryString ${JSON.stringify(req.query)}`)
+  console.log(`User POST x form body ${JSON.stringify(req.body)}`)
+
   const options = {
     body: req.body
   };

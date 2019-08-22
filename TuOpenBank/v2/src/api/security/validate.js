@@ -27,10 +27,3 @@ requireScope = (scope) => {
 module.exports.jwtCheck = jwtCheck
 module.exports.requireScope = requireScope
 
-// var app = module.exports = express.Router();
-
-// app.use('/user', jwtCheck, requireScope('full_access'));
-// app.use('/account', jwtCheck, requireScope('full_access'));
-// app.use('/product', jwtCheck, requireScope('full_access'));
-// app.use('/transaction', jwtCheck, requireScope('full_access'));
-

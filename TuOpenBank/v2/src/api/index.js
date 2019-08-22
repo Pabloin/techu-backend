@@ -17,7 +17,7 @@ app.use(cookieParser());
  */
 var security = require('./security/validate')
 
-app.use('/user',        security.jwtCheck, security.requireScope('full_access'));
+// app.use('/user',        security.jwtCheck, security.requireScope('full_access'));
 app.use('/account',     security.jwtCheck, security.requireScope('full_access'));
 app.use('/product',     security.jwtCheck, security.requireScope('full_access'));
 app.use('/transaction', security.jwtCheck, security.requireScope('full_access'));
