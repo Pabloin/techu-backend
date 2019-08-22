@@ -3,10 +3,13 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const config = require('../lib/config');
 const logger = require('../lib/logger');
+const Global = require('./core/Global');
 const mongoose = require('mongoose');
 
-require('dotenv').config({path: './.env'})
 
+const kk = require('dotenv').config({path: '../src/api/.env'})
+
+console.log(`kk ${JSON.stringify(kk)}`)
 const log = logger(config.logger);
 const app = express();
 
@@ -34,6 +37,15 @@ app.use((err, req, res, next) => {
   const msg = err.error || err.message;
   log.error(`Error ${status} (${msg}) on ${req.method} ${req.url} with payload ${req.body}.`);
   res.status(status).send({ status, error: msg });
+});
+
+
+mongoose.connect(Global.getMongoConfig(), function(err, res) {
+    if(err) {
+        console.log('Error connecting to the database. ' + err);
+    } else {
+        console.log('Connected to Database ... ');
+    }
 });
 
 

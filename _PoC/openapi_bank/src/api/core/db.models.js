@@ -1,6 +1,9 @@
 var mongoose = require('mongoose').set('debug', true)
 
-var UserSchema = mongoose.Schema({
+//Define a schema
+var Schema = mongoose.Schema;
+
+var UserSchema = new Schema({
 
   userId     : Number,
   username   : String,
@@ -11,7 +14,7 @@ var UserSchema = mongoose.Schema({
 
 });
 
-var TransactionSchema = mongoose.Schema({
+var TransactionSchema = new Schema({
 
   transactionId       : Number,
   userId              : Number,
@@ -22,7 +25,7 @@ var TransactionSchema = mongoose.Schema({
 
 });
 
-var ProductSchema = mongoose.Schema({
+var ProductSchema = new Schema({
 
   productId            : Number,
   productCode          : String,
@@ -33,7 +36,7 @@ var ProductSchema = mongoose.Schema({
 
 });
 
-var AccountSchema = mongoose.Schema({
+var AccountSchema = new Schema({
 
   userId             : Number,
   accountId          : Number,
@@ -45,4 +48,18 @@ var AccountSchema = mongoose.Schema({
   accountBalance     : Number
 
 });
+
+
+var UserModel         = mongoose.model('UserModel',         UserSchema );
+var TransactiontModel = mongoose.model('TransactiontModel', TransactionSchema );
+var ProductModel      = mongoose.model('ProductModel',      ProductSchema );
+var AccountModel      = mongoose.model('AccountModel',      AccountSchema );
+
+
+// Enable CRUD Operation
+
+module.exports.UserModel         = UserModel
+module.exports.TransactiontModel = TransactiontModel
+module.exports.ProductModel      = ProductModel
+module.exports.AccountModel      = AccountModel
 

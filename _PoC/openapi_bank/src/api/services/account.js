@@ -1,4 +1,7 @@
 const ServerError = require('../../lib/error');
+
+const CORE_DB = require('../core/db.test');
+
 /**
  * @param {Object} options
  * @param {Integer} options.accountId Id de la cuenta
@@ -22,6 +25,9 @@ module.exports.getAccount = async (options) => {
   //   status: 500, // Or another error code.
   //   error: 'Server Error' // Or another error message.
   // });
+
+
+  CORE_DB.testDatabaseModel()
 
   return {
     status: 200,
