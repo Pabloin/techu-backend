@@ -11,8 +11,10 @@ const fs = require('fs');
 
 const mongoose = require('mongoose').set('debug', true);
 
-require('dotenv').config({path: './_PoC/openapi_bank/.env'})
+// require('dotenv').config({path: './_PoC/openapi_bank/.env'})  // snc swagger.yaml
+var ENV_CONFIG = require('dotenv').config({path: '.env'})  // en _PoC/openapi_bank  : nodemon nodemon src/bin/www
 
+console.log(`ENV_CONFIG: ${JSON.stringify(ENV_CONFIG)}`)
 
 const log = logger(config.logger);
 const app = express();
