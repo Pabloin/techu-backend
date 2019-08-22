@@ -4,16 +4,19 @@ const getMongoConfig = () => {
 
   console.log(`getMongoConfig() `)
 
-  const user = process.env.Techu_MONGODB_MLAB_USER
-  const pass = process.env.Techu_MONGODB_MLAB_PASS
+  // const user = process.env.Techu_MONGODB_MLAB_USER
+  // const pass = process.env.Techu_MONGODB_MLAB_PASS
+  // const host = process.env.Techu_MONGODB_MLAB_HOST
+  // const base = process.env.Techu_MONGODB_MLAB_BASE
+
+  user='Techu'
+  pass='Techu2020'
+  host='ds263307.mlab.com:63307'
+  base='techu-bank-alpha'
 
   const mongoConfig = (user && pass)
-          ? 'mongodb://'+user+':'+pass+'@'
-              +process.env.Techu_MONGODB_MLAB_HOST+'/'
-              +process.env.Techu_MONGODB_MLAB_BASE
-          : 'mongodb://'
-              +process.env.Techu_MONGODB_MLAB_HOST+'/'
-              +process.env.Techu_MONGODB_MLAB_BASE
+          ? 'mongodb://'+user+':'+pass+'@'+host+'/'+base
+          : 'mongodb://'+host+'/'+base
 
   console.log(`getMongoConfig()= ${mongoConfig}`)
 
@@ -23,8 +26,5 @@ const getMongoConfig = () => {
 
 module.exports.getMongoConfig = getMongoConfig
 
-// Techu_MONGODB_MLAB_BASE=techu-bank-alpha
-// Techu_MONGODB_MLAB_USER=Techu
-// Techu_MONGODB_MLAB_PASS=Techu2020
-// Techu_MONGODB_MLAB_HOST=ds263307.mlab.com:63307
+
 

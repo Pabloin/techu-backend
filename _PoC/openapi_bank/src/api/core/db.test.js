@@ -12,7 +12,7 @@ module.exports.testDatabaseModel = () => {
 
   var user = UserModel.find({ 'userId' : 1 })
 
-  console.log(`testDatabaseModel() rta = ${JSON.stringify(user.length)}`);
+  console.log(`testDatabaseModel() rta = ${JSON.stringify(user)}`);
 
   console.log(`testDatabaseModel() rta = `);
 }
