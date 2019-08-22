@@ -36,7 +36,10 @@ router.get('/login', async (req, res, next) => {
     const result = await user.loginUser(options);
     res.status(result.status || 200).send(result.data);
   } catch (err) {
-    next(err);
+    return res.status(500).send({
+      status: 500,
+      error: 'Server Error'
+    });
   }
 });
 

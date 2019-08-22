@@ -1,4 +1,6 @@
 const ServerError = require('../../lib/error');
+const Quotes = require('../core/Quotes.json');
+
 /**
  * @param {Object} options
  * @param {Integer} options.quoteId QuoteId
@@ -6,6 +8,9 @@ const ServerError = require('../../lib/error');
  * @return {Promise}
  */
 module.exports.getQuote = async (options) => {
+
+  console.log(`getQuote(${options})`)
+
   // Implement your business logic here...
   //
   // This function should return as follows:
@@ -23,9 +28,11 @@ module.exports.getQuote = async (options) => {
   //   error: 'Server Error' // Or another error message.
   // });
 
+  var rand = Math.floor(Math.random() * Quotes.length);
+
   return {
     status: 200,
-    data: 'getQuote ok!'
+    data: Quotes[rand]
   };
 };
 
@@ -35,7 +42,10 @@ module.exports.getQuote = async (options) => {
  * @throws {Error}
  * @return {Promise}
  */
-module.exports.getQuote = async (options) => {
+module.exports.getProtectedQuote = async (options) => {
+
+  console.log(`getProtectedQuote(${options})`)
+
   // Implement your business logic here...
   //
   // This function should return as follows:
@@ -53,9 +63,11 @@ module.exports.getQuote = async (options) => {
   //   error: 'Server Error' // Or another error message.
   // });
 
+  var rand = Math.floor(Math.random() * Quotes.length);
+
   return {
     status: 200,
-    data: 'getQuote ok!'
+    data: Quotes[rand]
   };
 };
 

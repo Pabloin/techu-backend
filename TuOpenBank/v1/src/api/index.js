@@ -11,28 +11,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-/**
- * PEI INICIO
- */
-const Global = require('./core/Global');
-const mongoose = require('mongoose').set('debug', true);
-
-// require('dotenv').config({path: './TuOpenBank/v1/.env'})  // snc swagger.yaml
-var ENV_CONFIG = require('dotenv').config({path: '.env'})  // en TuOpenBank/v1/.env : nodemon nodemon src/bin/www
-
-console.log(`ENV_CONFIG: ${JSON.stringify(ENV_CONFIG)}`)
-
-mongoose.connect(Global.getMongoConfig(), function(err, res) {
-  if(err) {
-      console.log('Error connecting to the database. ' + err);
-  } else {
-      console.log('Connected to Database ... ');
-  }
-});
-/**
- * PEI FIN
- */
-
 /*
  * Routes
  */

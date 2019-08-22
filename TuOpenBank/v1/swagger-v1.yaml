@@ -65,12 +65,6 @@ paths:
                 type: string
                 format: date-time
               description: date in UTC cuando el token
-        '400':
-          description: Credenciales de autenticación invalidas
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /user/logout:
     get:
       x-swagger-router-controller: User
@@ -105,12 +99,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
-        '400':
-          description: Credenciales de autenticación invalidas
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /product/{productId}:
     get:
       x-swagger-router-controller: Product
@@ -133,12 +121,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
-        '400':
-          description: Credenciales de autenticación invalidas
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /quote/{quoteId}:
     get:
       x-swagger-router-controller: Quote
@@ -164,7 +146,7 @@ paths:
   /quote/protected/{quoteId}:
     get:
       x-swagger-router-controller: Quote
-      operationId: getQuote
+      operationId: getProtectedQuote
       tags:
         - /quote
       summary: Mensajes, textos o promociones
@@ -183,12 +165,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Quote'
-        '400':
-          description: Credenciales de autenticación invalidas
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /transaction/{userId}:
     get:
       x-swagger-router-controller: Transaction
@@ -211,12 +187,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TransactionList'
-        '400':
-          description: Credenciales de autenticación invalidas
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
 components:
   schemas:
     User:
@@ -295,20 +265,3 @@ components:
           type: integer
         text:
           type: string
-    Error:
-      type: object
-      description: Default template para el mensaje de error.
-      required:
-      - code
-      - message
-      - description
-      properties:
-        code:
-          type: integer
-          description: Codigo Unico de mensaje de error.
-        message:
-          type: string
-          description: Mensaje de error breve.
-        description:
-          type: string
-          description: Mensaje de error detallado.

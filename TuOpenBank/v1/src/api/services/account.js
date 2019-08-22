@@ -2,7 +2,6 @@ const ServerError = require('../../lib/error');
 
 const CORE_DB = require('../core/db.test');
 
-
 /**
  * @param {Object} options
  * @param {Integer} options.accountId Id de la cuenta
