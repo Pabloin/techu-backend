@@ -12,6 +12,30 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 
+/**
+ * Setup
+ */
+const Global = require('./core/Global');
+const mongoose = require('mongoose').set('debug', true);
+
+// Current Path: process.cwd()
+
+var ENV_CONFIG = require('dotenv').config({path: 'TuOpenBank/v2/.env'})  // Desde debugger
+// var ENV_CONFIG = require('dotenv').config({path: '.env'})  // en TuOpenBank/v2  : nodemon nodemon src/bin/www
+
+console.log(`ENV_CONFIG: ${JSON.stringify(ENV_CONFIG)}`)
+
+
+
+mongoose.connect(Global.getMongoConfig(), function(err, res) {
+  if(err) {
+      console.log('Error connecting to the database. ' + err);
+  } else {
+      console.log('Connected to Database ... ');
+  }
+});
+
+
 /*
  * Seguridad de Acceso
  */
@@ -22,6 +46,7 @@ app.use('/account',     security.jwtCheck, security.requireScope('full_access'))
 app.use('/product',     security.jwtCheck, security.requireScope('full_access'));
 app.use('/transaction', security.jwtCheck, security.requireScope('full_access'));
 app.use('/quote',       security.jwtCheck, security.requireScope('full_access'));
+
 
 
 
