@@ -10,9 +10,12 @@ module.exports.testDatabaseModel = () => {
   var ProductModel      = require('./db.models').ProductModel
   var AccountModel      = require('./db.models').AccountModel
 
-  var user = UserModel.find({ 'userId' : 1 })
+  UserModel.find({ 'userId' : 1 }, 'userId username password', (err, user) => {
 
-  console.log(`testDatabaseModel() rta = ${JSON.stringify(user)}`);
+    console.log(`testDatabaseModel() rta = ${JSON.stringify(user)}`);
+
+  })
+
 
   console.log(`testDatabaseModel() rta = `);
 }

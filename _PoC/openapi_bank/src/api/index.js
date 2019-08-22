@@ -4,12 +4,16 @@ const bodyParser = require('body-parser');
 const config = require('../lib/config');
 const logger = require('../lib/logger');
 const Global = require('./core/Global');
-const mongoose = require('mongoose');
+
+var path = require('path');
+
+const fs = require('fs');
+
+const mongoose = require('mongoose').set('debug', true);
+
+require('dotenv').config({path: './_PoC/openapi_bank/.env'})
 
 
-const kk = require('dotenv').config({path: '../src/api/.env'})
-
-console.log(`kk ${JSON.stringify(kk)}`)
 const log = logger(config.logger);
 const app = express();
 

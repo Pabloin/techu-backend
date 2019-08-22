@@ -50,10 +50,12 @@ var AccountSchema = new Schema({
 });
 
 
-var UserModel         = mongoose.model('UserModel',         UserSchema );
-var TransactiontModel = mongoose.model('TransactiontModel', TransactionSchema );
-var ProductModel      = mongoose.model('ProductModel',      ProductSchema );
-var AccountModel      = mongoose.model('AccountModel',      AccountSchema );
+var UserModel         = mongoose.model('users',         UserSchema );
+var TransactiontModel = mongoose.model('transactionts', TransactionSchema );
+var ProductModel      = mongoose.model('products',      ProductSchema );
+var AccountModel      = mongoose.model('accounts',      AccountSchema );
+
+
 
 
 // Enable CRUD Operation
@@ -62,4 +64,5 @@ module.exports.UserModel         = UserModel
 module.exports.TransactiontModel = TransactiontModel
 module.exports.ProductModel      = ProductModel
 module.exports.AccountModel      = AccountModel
+
 
