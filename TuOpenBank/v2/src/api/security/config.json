@@ -1,0 +1,5 @@
+{
+  "secret": "TuOpenBank is Secure!",
+  "audience": "techu-backend-jwt-auth",
+  "issuer": "https://techu-backend.herokuapp.com/"
+}

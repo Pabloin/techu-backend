@@ -15,14 +15,16 @@ app.use(cookieParser());
 /*
  * Seguridad de Acceso
  */
-var security = function (req, res, next) {
-  console.log('security filter active .... ')
-  next()
-}
-app.use('/user', security);
-app.use('/account', security);
-app.use('/product', security);
-app.use('/transaction', security);
+var security = require('./security/validate')
+
+app.use('/user',        security.jwtCheck, security.requireScope('full_access'));
+app.use('/account',     security.jwtCheck, security.requireScope('full_access'));
+app.use('/product',     security.jwtCheck, security.requireScope('full_access'));
+app.use('/transaction', security.jwtCheck, security.requireScope('full_access'));
+app.use('/quote',       security.jwtCheck, security.requireScope('full_access'));
+
+
+
 
 /*
  * Routes
