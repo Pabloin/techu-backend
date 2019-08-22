@@ -3,6 +3,18 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const config = require('../lib/config');
 const logger = require('../lib/logger');
+const Global = require('./core/Global');
+
+var path = require('path');
+
+const fs = require('fs');
+
+const mongoose = require('mongoose').set('debug', true);
+
+// require('dotenv').config({path: './_PoC/openapi_bank/.env'})  // snc swagger.yaml
+var ENV_CONFIG = require('dotenv').config({path: '.env'})  // en _PoC/openapi_bank  : nodemon nodemon src/bin/www
+
+console.log(`ENV_CONFIG: ${JSON.stringify(ENV_CONFIG)}`)
 
 const log = logger(config.logger);
 const app = express();
@@ -31,6 +43,15 @@ app.use((err, req, res, next) => {
   const msg = err.error || err.message;
   log.error(`Error ${status} (${msg}) on ${req.method} ${req.url} with payload ${req.body}.`);
   res.status(status).send({ status, error: msg });
+});
+
+
+mongoose.connect(Global.getMongoConfig(), function(err, res) {
+    if(err) {
+        console.log('Error connecting to the database. ' + err);
+    } else {
+        console.log('Connected to Database ... ');
+    }
 });
 
 
