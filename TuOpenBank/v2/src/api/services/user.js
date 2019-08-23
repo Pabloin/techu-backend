@@ -2,22 +2,49 @@ const ServerError = require('../../lib/error');
 
 var UserModel = require('../core/db.models').UserModel
 
+var secureUserToken = require('../security/validate-user-token')
 
 /**
  * @param {Object} options
  * @throws {Error}
  * @return {Promise}
  */
-// module.exports.createUser = async (options) => {
 module.exports.createUser = async (options) => {
 
+  var username = options.body.username
+  var password = options.body.password
+
+  // Paso 1: Usuario y password es obligatorio
+  if (!username || !password) {
+      return {
+        status: 400,
+        data: `User credentials "username, password" no pueden ser nulas.`
+      };
+  }
+
+
+  // Paso 2: Chequea si el usuario ya existe
+  var userList = await UserModel
+                        .find({ 'username' : username }, 'userId username isLogged')
+                        .exec();
+
+  console.log(`createUser(${username}) rta = ${JSON.stringify(userList)}`);
+
+  if (userList.length > 0) {
+      return {
+        status: 400,
+        data: `User "${username}" already exist.`
+      };
+  }
+
+  // Paso 3: Se crea un nuevo usuario (Y se lo logonea)
   var userId   = Math.floor(Math.random() * 1000);
-  var isLogged = false;
+  var isLogged = true;
 
   var user = new UserModel({
       userId    : userId,
-      username  : options.body.username,
-      password  : options.body.password,
+      username  : username,
+      password  : password,
       firstName : options.body.firstName,
       lastName  : options.body.lastName,
       isLogged  : isLogged,
@@ -25,14 +52,31 @@ module.exports.createUser = async (options) => {
 
   console.log(`To Save ${JSON.stringify(user)} `)
 
+
+  var id_token = secureUserToken.createIdToken(user)
+  var access_token = secureUserToken.createAccessToken()
+
+  console.log(`TOKENS: id_token     ${id_token}`)
+  console.log(`TOKENS: access_token ${access_token}`)
+
+
   user.save((err) => {
     if (err) return handleError(err);
   })
 
+  // return {
+  //   status: 200,
+  //   data: `createUser with id ${userId} ok! => ${JSON.stringify(user)}`
+  // };
+
   return {
-    status: 200,
-    data: `createUser with id ${userId} ok! => ${JSON.stringify(user)}`
+    status: 201,
+    data: {
+          id_token : id_token,
+      access_token : access_token
+    }
   };
+
 };
 
 
@@ -43,17 +87,6 @@ module.exports.createUser = async (options) => {
  * @throws {Error}
  * @return {Promise}
  */
-async (request, response) => {
-  try {
-      var person = new PersonModel(request.body);
-      var result = await person.save();
-      response.send(result);
-  } catch (error) {
-      response.status(500).send(error);
-  }
-}
-
-
 module.exports.loginUser = async (options) => {
 
   var username  = options.username;
