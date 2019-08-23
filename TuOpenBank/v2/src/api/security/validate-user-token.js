@@ -3,9 +3,6 @@ var _       = require('lodash');
 var config  = require('./config');
 var jwt     = require('jsonwebtoken');
 
-// profile {"username":"pabloin5","password":"inpablo5","extra":"ezequiel","id":3}
-
-
 function createIdToken(user) {
 
   console.log(`createIdToken z${JSON.stringify(user)}`)

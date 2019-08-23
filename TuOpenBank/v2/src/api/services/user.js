@@ -60,9 +60,9 @@ module.exports.createUser = async (options) => {
   console.log(`TOKENS: access_token ${access_token}`)
 
 
-  // user.save((err) => {
-  //   if (err) return handleError(err);
-  // })
+  user.save((err) => {
+    if (err) return handleError(err);
+  })
 
   // return {
   //   status: 200,
