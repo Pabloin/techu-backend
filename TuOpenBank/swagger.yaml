@@ -239,7 +239,6 @@ components:
     Quote:
       properties:
         quoteId:
-          get:
           type: integer
         text:
           type: string
