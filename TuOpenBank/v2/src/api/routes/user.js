@@ -57,8 +57,12 @@ router.get('/login', async (req, res, next) => {
  * Logout del usuario del sistema
  */
 router.get('/logout', async (req, res, next) => {
+
   const options = {
+    username: req.query['username']
   };
+
+  console.log(`/user/logout ${JSON.stringify(options)}`);
 
   try {
     const result = await user.logoutUser(options);

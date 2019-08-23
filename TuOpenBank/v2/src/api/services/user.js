@@ -43,25 +43,45 @@ module.exports.createUser = async (options) => {
  * @throws {Error}
  * @return {Promise}
  */
+async (request, response) => {
+  try {
+      var person = new PersonModel(request.body);
+      var result = await person.save();
+      response.send(result);
+  } catch (error) {
+      response.status(500).send(error);
+  }
+}
+
+
 module.exports.loginUser = async (options) => {
 
   var username  = options.username;
   var password  = options.password;
 
-  var user = await UserModel
-                    .find({ 'username' : username }, 'userId username password')
+  var userList = await UserModel
+                    .find({ 'username' : username }, 'userId username password isLogged')
                     .exec();
 
   console.log(`loginUser(${username}) rta = ${JSON.stringify(user)}`);
 
-  if (user.length === 0) {
+  if (userList.length === 0) {
     return {
       status: 404,
       data: `User "${username}" not found.`
     };
   }
 
-  if (user[0].password === password) {
+  var user = userList[0]
+
+  if (user.password === password) {
+
+    // Login True
+    user.isLogged = true
+    var result = await user.save();
+
+    console.log(`OK loginUser(${username}) OK rta = ${JSON.stringify(result)}`);
+
     return {
       status: 200,
       data: `User "${username}" Authorzed. Login OK.`
@@ -80,22 +100,29 @@ module.exports.loginUser = async (options) => {
  * @return {Promise}
  */
 module.exports.logoutUser = async (options) => {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
+
+  var username  = options.username;
+
+  var userList = await UserModel
+                    .find({ 'username' : username }, 'userId username isLogged')
+                    .exec();
+
+  console.log(`logoutUser(${username}) rta = ${JSON.stringify(user)}`);
+
+  if (userList.length === 0) {
+    return {
+      status: 404,
+      data: `User "${username}" not found.`
+    };
+  }
+
+  var user = userList[0]
+
+  // Login True
+  user.isLogged = false
+  var result = await user.save();
+
+  console.log(`OK loginUser(${username}) OK rta = ${JSON.stringify(result)}`);
 
   return {
     status: 200,
