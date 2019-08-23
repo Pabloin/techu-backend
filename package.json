@@ -7,7 +7,7 @@
     "npm": "6.x"
   },
   "scripts": {
-    "start": "node src/bin/www",
+    "start": "node src/bin/www  | bunyan",
     "dev": "node src/bin/www | bunyan"
   },
   "dependencies": {
