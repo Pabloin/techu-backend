@@ -2,6 +2,10 @@
   "name": "techu-open-api-bank",
   "description": "Open API Bank",
   "version": "1.0.0",
+  "engines": {
+    "node": "10.x",
+    "npm": "6.x"
+  },
   "scripts": {
     "start": "node src/bin/www",
     "dev": "node src/bin/www | bunyan"
