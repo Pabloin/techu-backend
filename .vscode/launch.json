@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "nodemon",
             "runtimeExecutable": "nodemon",
-            "program": "${workspaceFolder}/_PoC/openapi_bank/src/bin/www",
+            "program": "${workspaceFolder}/TuOpenBank/v2/src/bin/www",
             "restart": true,
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
