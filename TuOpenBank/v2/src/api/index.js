@@ -20,8 +20,8 @@ const mongoose = require('mongoose').set('debug', true);
 
 // Current Path: process.cwd()
 
-var ENV_CONFIG = require('dotenv').config({path: 'TuOpenBank/v2/.env'})  // Desde debugger
-// var ENV_CONFIG = require('dotenv').config({path: '.env'})  // en TuOpenBank/v2  : nodemon nodemon src/bin/www
+// var ENV_CONFIG = require('dotenv').config({path: 'TuOpenBank/v2/.env'})  // Desde debugger
+var ENV_CONFIG = require('dotenv').config({path: '.env'})  // en TuOpenBank/v2  : nodemon nodemon src/bin/www
 
 console.log(`ENV_CONFIG: ${JSON.stringify(ENV_CONFIG)}`)
 

@@ -31,10 +31,16 @@ router.post('/', async (req, res, next) => {
  * Login del usuario en el sistema
  */
 router.get('/login', async (req, res, next) => {
+
+  console.log(`User LOGIN GET queryString ${JSON.stringify(req.query)}`)
+  console.log(`User LOGIN GET x form body ${JSON.stringify(req.body)}`)
+
   const options = {
     username: req.query['username'],
     password: req.query['password']
   };
+
+  console.log(`/user/login ${JSON.stringify(options)}`);
 
   try {
     const result = await user.loginUser(options);
