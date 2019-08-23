@@ -11,6 +11,33 @@ var UserModel = require('../core/db.models').UserModel
 // module.exports.createUser = async (options) => {
 module.exports.createUser = async (options) => {
 
+  var username = options.body.username
+  var password = options.body.password
+
+  // Paso 1: Usuario y password es obligatorio
+  if (!username || !password) {
+      return {
+        status: 400,
+        data: `User credentials "username, password" no pueden ser nulas.`
+      };
+  }
+
+
+  // Paso 2: Chequea si el usuario ya existe
+  var userList = await UserModel
+                        .find({ 'username' : username }, 'userId username isLogged')
+                        .exec();
+
+  console.log(`createUser(${username}) rta = ${JSON.stringify(userList)}`);
+
+  if (userList.length > 0) {
+      return {
+        status: 400,
+        data: `User "${username}" already exist.`
+      };
+  }
+
+  // Paso 3: Se crea un nuevo usuario
   var userId   = Math.floor(Math.random() * 1000);
   var isLogged = false;
 
