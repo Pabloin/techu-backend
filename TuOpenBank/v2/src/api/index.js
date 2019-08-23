@@ -20,8 +20,8 @@ const mongoose = require('mongoose').set('debug', true);
 
 // Current Path: process.cwd()
 
-// var ENV_CONFIG = require('dotenv').config({path: 'TuOpenBank/v2/.env'})  // Desde debugger
-var ENV_CONFIG = require('dotenv').config({path: '.env'})  // en TuOpenBank/v2  : nodemon nodemon src/bin/www
+var ENV_CONFIG = require('dotenv').config({path: 'TuOpenBank/v2/.env'})  // Desde debugger
+// var ENV_CONFIG = require('dotenv').config({path: '.env'})  // en TuOpenBank/v2  : nodemon nodemon src/bin/www
 
 console.log(`ENV_CONFIG: ${JSON.stringify(ENV_CONFIG)}`)
 
@@ -39,13 +39,13 @@ mongoose.connect(Global.getMongoConfig(), function(err, res) {
 /*
  * Seguridad de Acceso
  */
-var security = require('./security/validate')
+var secureScopeToken = require('./security/validate-scope-token')
 
-// app.use('/user',        security.jwtCheck, security.requireScope('full_access'));
-app.use('/account',     security.jwtCheck, security.requireScope('full_access'));
-app.use('/product',     security.jwtCheck, security.requireScope('full_access'));
-app.use('/transaction', security.jwtCheck, security.requireScope('full_access'));
-app.use('/quote',       security.jwtCheck, security.requireScope('full_access'));
+// app.use('/user',     secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
+app.use('/account',     secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
+app.use('/product',     secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
+app.use('/transaction', secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
+app.use('/quote',       secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
 
 
 

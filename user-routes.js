@@ -13,10 +13,16 @@ var users = [{
 }];
 
 function createIdToken(user) {
+
+  console.log(`createIdToken `)
+
   return jwt.sign(_.omit(user, 'password'), config.secret, { expiresIn: 60*60*5 });
 }
 
 function createAccessToken() {
+
+  console.log(`createAccessToken `)
+
   return jwt.sign({
     iss: config.issuer,
     aud: config.audience,
@@ -30,6 +36,9 @@ function createAccessToken() {
 
 // Generate Unique Identifier for the access token
 function genJti() {
+  
+  console.log(`genJti `)
+
   let jti = '';
   let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (let i = 0; i < 16; i++) {
@@ -41,6 +50,8 @@ function genJti() {
 
 function getUserScheme(req) {
   
+  console.log(`getUserScheme `)
+
   var username;
   var type;
   var userSearch = {};
@@ -69,12 +80,17 @@ function getUserScheme(req) {
  * PEI - Muestra la lista de usuarios.
  */
 app.get('/users', function(req, res) {
+
+  console.log(`GET /users `)
+
   res.status(200).send(users)
 })
 
 
 app.post('/users', function(req, res) {
-  
+
+  console.log(`POST /users `)
+
   var userScheme = getUserScheme(req);  
 
   if (!userScheme.username || !req.body.password) {
@@ -88,6 +104,8 @@ app.post('/users', function(req, res) {
   var profile = _.pick(req.body, userScheme.type, 'password', 'extra');
   profile.id = _.max(users, 'id').id + 1;
 
+  console.log(`profile ${JSON.stringify(profile)} `)
+
   users.push(profile);
 
   res.status(201).send({
@@ -97,6 +115,8 @@ app.post('/users', function(req, res) {
 });
 
 app.post('/sessions/create', function(req, res) {
+
+  console.log(`POST /sessions/create`)
 
   var userScheme = getUserScheme(req);
 
