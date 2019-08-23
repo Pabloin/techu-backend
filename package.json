@@ -3,7 +3,7 @@
   "description": "Open API Bank",
   "version": "1.0.0",
   "engines": {
-    "node": "10.x",
+    "node": "10.16.x",
     "npm": "6.x"
   },
   "scripts": {
