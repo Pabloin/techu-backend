@@ -14,7 +14,7 @@ requireScope = (scope) => {
 
   console.log(`Security Check => ${JSON.stringify(scope)}`)
   return (req, res, next) => {
-    var has_scopes = req.user.scope === scope;
+    var  has_scopes = req.user.scope === scope;
     if (!has_scopes) {
         res.sendStatus(401);
         return;
