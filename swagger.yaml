@@ -6,7 +6,16 @@ info:
 # Added by API Auto Mocking Plugin
 servers:
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/Pabloin/TuOpenBank/1.0.0
+    url: 'https://virtserver.swaggerhub.com/Pabloin/TuOpenBank/1.0.0'
+  - url: 'http://localhost:3000'
+    variables: {}
+    description: Local Environment
+  - url: 'https://techu-backend-develop.herokuapp.com'
+    variables: {}
+    description: Development Environment
+  - url: 'https://techu-backend.herokuapp.com'
+    variables: {}
+    description: Production Environment
 paths:
   /user:
     post:
