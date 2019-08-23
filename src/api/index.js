@@ -27,7 +27,9 @@ try {
 
   // Current Path: process.cwd()
 
-  const ENV_PATH = (fs.existsSync('.env')) ? '.env' : 'TuOpenBank/v2/.env'
+  // const ENV_PATH = (fs.existsSync('.env')) ? '.env' : 'TuOpenBank/v2/.env'
+
+  const ENV_PATH = '.env'
 
   var ENV_CONFIG = require('dotenv').config({path: ENV_PATH })
 
