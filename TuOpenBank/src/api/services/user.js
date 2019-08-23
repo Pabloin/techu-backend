@@ -92,11 +92,21 @@ module.exports.loginUser = async (options) => {
   var username  = options.username;
   var password  = options.password;
 
+  // Paso 1: Usuario y password es obligatorio
+  if (!username || !password) {
+    return {
+      status: 400,
+      data: `User credentials "username, password" no pueden ser nulas.`
+    };
+  }
+
+
+  // Paso 2: Chequea que el usuario exista
   var userList = await UserModel
                     .find({ 'username' : username }, 'userId username password isLogged')
                     .exec();
 
-  console.log(`loginUser(${username}) rta = ${JSON.stringify(user)}`);
+  console.log(`loginUser(${username}) rta = ${JSON.stringify(userList)}`);
 
   if (userList.length === 0) {
     return {
@@ -105,6 +115,7 @@ module.exports.loginUser = async (options) => {
     };
   }
 
+  // Paso 3: Realiza el login del usuario si la passwor esta ok
   var user = userList[0]
 
   if (user.password === password) {
@@ -113,12 +124,26 @@ module.exports.loginUser = async (options) => {
     user.isLogged = true
     var result = await user.save();
 
+    var id_token     = secureUserToken.createIdToken(user)
+    var access_token = secureUserToken.createAccessToken()
+
+    console.log(`TOKENS: id_token     ${id_token}`)
+    console.log(`TOKENS: access_token ${access_token}`)
+
     console.log(`OK loginUser(${username}) OK rta = ${JSON.stringify(result)}`);
 
     return {
-      status: 200,
-      data: `User "${username}" Authorzed. Login OK.`
+      status: 201,
+      data: {
+            id_token : id_token,
+        access_token : access_token
+      }
     };
+
+    // return {
+    //   status: 200,
+    //   data: `User "${username}" Authorzed. Login OK.`
+    // };
   }
 
   return {

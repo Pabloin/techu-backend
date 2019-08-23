@@ -1,6 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 const config = require('../lib/config');
 const logger = require('../lib/logger');
 
@@ -18,12 +19,23 @@ app.use(cookieParser());
 const Global = require('./core/Global');
 const mongoose = require('mongoose').set('debug', true);
 
-// Current Path: process.cwd()
 
-var ENV_CONFIG = require('dotenv').config({path: 'TuOpenBank/v2/.env'})  // Desde debugger
-// var ENV_CONFIG = require('dotenv').config({path: '.env'})  // en TuOpenBank/v2  : nodemon nodemon src/bin/www
 
-console.log(`ENV_CONFIG: ${JSON.stringify(ENV_CONFIG)}`)
+
+
+try {
+
+  // Current Path: process.cwd()
+
+  const ENV_PATH = (fs.existsSync('.env')) ? '.env' : 'TuOpenBank/v2/.env'
+
+  var ENV_CONFIG = require('dotenv').config({path: ENV_PATH })
+
+  console.log(`ENV_CONFIG: ${JSON.stringify(ENV_CONFIG)}`)
+
+} catch(err) {
+  console.error(err)
+}
 
 
 
