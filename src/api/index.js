@@ -16,7 +16,7 @@ app.use(cookieParser());
 /**
  * Setup
  */
-const Global = require('./core/Global');
+const Common = require('./core/Common');
 const mongoose = require('mongoose').set('debug', true);
 
 app.use(cors())
@@ -46,7 +46,7 @@ try {
 
 
 
-mongoose.connect(Global.getMongoConfig(), function(err, res) {
+mongoose.connect(Common.getMongoConfig(), function(err, res) {
   if(err) {
       console.log('Error connecting to the database. ' + err);
   } else {
