@@ -1,7 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const fs = require('fs');
+const cors = require('cors')
 const config = require('../lib/config');
 const logger = require('../lib/logger');
 
@@ -19,9 +19,14 @@ app.use(cookieParser());
 const Global = require('./core/Global');
 const mongoose = require('mongoose').set('debug', true);
 
+app.use(cors())
 
-
-
+app.use(function (req, res, next) {
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
+  next()
+});
 
 try {
 
