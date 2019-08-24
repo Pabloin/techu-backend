@@ -18,7 +18,17 @@ router.post('/', async (req, res, next) => {
 
   try {
     const result = await user.createUser(options);
-    res.status(result.status || 200).send(result.data);
+
+    // res.status(result.status || 200).send(result.data);
+
+    if (result.status === 200) {
+      res.status(200).send(result.data);
+    } else {
+      res.status(result.status).send({
+        status: result.status,
+        error: result.data
+      });
+    }
   } catch (err) {
     return res.status(500).send({
       status: 500,
