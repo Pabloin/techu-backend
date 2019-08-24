@@ -19,9 +19,14 @@ app.use(cookieParser());
 const Global = require('./core/Global');
 const mongoose = require('mongoose').set('debug', true);
 
-app.use(cors({
-  origin: '*'
-}));
+app.use(cors())
+
+app.use(function (req, res, next) {
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
+  next()
+});
 
 try {
 
