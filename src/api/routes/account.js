@@ -1,6 +1,6 @@
 const express = require('express');
 const account = require('../services/account');
-
+const Common = require('../core/Common');
 const router = new express.Router();
 
 
@@ -14,7 +14,7 @@ router.get('/:accountId', async (req, res, next) => {
 
   try {
     const result = await account.getAccount(options);
-    res.status(result.status || 200).send(result.data);
+    res.status(result.status).send(Common.getResultData(result));
   } catch (err) {
     return res.status(500).send({
       status: 500,

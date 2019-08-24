@@ -1,5 +1,6 @@
 const express = require('express');
 const user = require('../services/user');
+const Common = require('../core/Common');
 
 const router = new express.Router();
 
@@ -18,17 +19,7 @@ router.post('/', async (req, res, next) => {
 
   try {
     const result = await user.createUser(options);
-
-    // res.status(result.status || 200).send(result.data);
-
-    if (result.status === 200) {
-      res.status(200).send(result.data);
-    } else {
-      res.status(result.status).send({
-        status: result.status,
-        error: result.data
-      });
-    }
+    res.status(result.status).send(Common.getResultData(result));
   } catch (err) {
     return res.status(500).send({
       status: 500,
@@ -54,7 +45,7 @@ router.get('/login', async (req, res, next) => {
 
   try {
     const result = await user.loginUser(options);
-    res.status(result.status || 200).send(result.data);
+    res.status(result.status).send(Common.getResultData(result));
   } catch (err) {
     return res.status(500).send({
       status: 500,
@@ -76,7 +67,7 @@ router.get('/logout', async (req, res, next) => {
 
   try {
     const result = await user.logoutUser(options);
-    res.status(200).send(result.data);
+    res.status(result.status).send(Common.getResultData(result));
   } catch (err) {
     return res.status(500).send({
       status: 500,

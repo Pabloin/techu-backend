@@ -1,4 +1,22 @@
+const is_HTTP_OK = (httpCode) => {
+  return httpCode >= 200 && httpCode < 300
+}
 
+const getResultData = (result) => {
+
+  if (is_HTTP_OK(result.status || 200)) {
+      return {
+        status: result.status,
+          data: result.data
+      }
+  }
+
+  return {
+    status: result.status,
+     error: result.data
+  }
+
+}
 
 const getMongoConfig = () => {
 
@@ -20,6 +38,6 @@ const getMongoConfig = () => {
 }
 
 module.exports.getMongoConfig = getMongoConfig
-
+module.exports.getResultData = getResultData
 
 
