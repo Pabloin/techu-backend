@@ -19,7 +19,9 @@ app.use(cookieParser());
 const Global = require('./core/Global');
 const mongoose = require('mongoose').set('debug', true);
 
-app.use(cors())
+app.use(cors({
+  origin: '*'
+}));
 
 try {
 
