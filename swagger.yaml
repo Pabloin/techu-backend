@@ -188,6 +188,8 @@ components:
           type: string
         lastName:
           type: string
+        email:
+          type: string
         isLogged:
           type: boolean
           default: false

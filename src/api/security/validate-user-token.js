@@ -12,6 +12,7 @@ function createIdToken(user) {
   userFlat.username  = user.username;
   userFlat.firstName = user.firstName;
   userFlat.lastName  = user.lastName;
+  userFlat.email     = user.email;
 
   console.log(`createIdToken userFlat ${JSON.stringify(userFlat)}`)
 
