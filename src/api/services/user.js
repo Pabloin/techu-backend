@@ -47,6 +47,7 @@ module.exports.createUser = async (options) => {
       password  : password,
       firstName : options.body.firstName,
       lastName  : options.body.lastName,
+      email     : options.body.email,
       isLogged  : isLogged,
   });
 
