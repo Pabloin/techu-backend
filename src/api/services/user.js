@@ -232,7 +232,7 @@ module.exports.recoverPassword = async (options) => {
 
   return {
     status: 200,
-    data: `recoverPassword ok para "${username}" con datos "${JSON.stringify(result)}"`
+    data: result
   };
 };
 
