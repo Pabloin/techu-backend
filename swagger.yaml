@@ -86,6 +86,34 @@ paths:
       responses:
         default:
           description: Logout exitoso.
+  /user/recover:
+    get:
+      x-swagger-router-controller: User
+      operationId: recoverPassword
+      tags:
+        - /user
+      summary: Recupera la password de un usuario enviando el mail
+      description: ""
+      parameters:
+      - name: username
+        in: query
+        description: Nombre del usuario que necesita recuperar la password
+        required: true
+        schema:
+          type: string
+      - name: email
+        in: query
+        description: Email a donde enviar la password
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Envio de mail exitoso
+          content:
+            application/json:
+              schema:
+                type: string
   /account/{accountId}:
     get:
       x-swagger-router-controller: Account
