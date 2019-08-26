@@ -76,4 +76,29 @@ router.get('/logout', async (req, res, next) => {
   }
 });
 
+
+/**
+ * Recupera la password de un usuario enviando el mail
+ */
+router.get('/recover', async (req, res, next) => {
+
+  const options = {
+    username: req.query['username'],
+    email: req.query['email']
+  };
+
+  console.log(`/user/recover ${JSON.stringify(options)}`);
+
+  try {
+    const result = await user.recoverPassword(options);
+    res.status(result.status).send(Common.getResultData(result));
+  } catch (err) {
+    return res.status(500).send({
+      status: 500,
+      error: 'Server Error'
+    });
+  }
+});
+
+
 module.exports = router;
