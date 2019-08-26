@@ -90,8 +90,8 @@ module.exports.createUser = async (options) => {
  */
 module.exports.loginUser = async (options) => {
 
-  var username  = options.username;
-  var password  = options.password;
+  var username = options.username;
+  var password = options.password;
 
   // Paso 1: Usuario y password es obligatorio
   if (!username || !password) {
@@ -160,7 +160,7 @@ module.exports.loginUser = async (options) => {
  */
 module.exports.logoutUser = async (options) => {
 
-  var username  = options.username;
+  var username = options.username;
 
   var userList = await UserModel
                     .find({ 'username' : username }, 'userId username isLogged')
@@ -194,6 +194,47 @@ module.exports.logoutUser = async (options) => {
 
 
 
+/**
+ * @param {Object} options
+ * @throws {Error}
+ * @return {Promise}
+ */
+module.exports.recoverPassword = async (options) => {
+
+  var username = options.username;
+  var email = options.email;
+
+  var userList = await UserModel
+                    .find({ 'username' : username }, 'userId username email password')
+                    .exec();
+
+  console.log(`recoverPassword(${username}) rta = ${JSON.stringify(user)}`);
+
+  if (userList.length === 0) {
+    return {
+      status: 404,
+      data: `User "${username}" not found.`
+    };
+  }
+
+  var user = userList[0]
+
+  var result = {
+    username : username,
+    password : user.password,
+    emailRecived : email,
+    emailRegister : user.email
+  }
+
+  // TODO Sent Mail Engine
+
+  console.log(`OK recoverPassword(${username}) OK rta = ${JSON.stringify(result)}`);
+
+  return {
+    status: 200,
+    data: `recoverPassword ok para "${username}" con datos "${JSON.stringify(result)}"`
+  };
+};
 
 
 
