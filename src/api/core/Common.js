@@ -18,6 +18,22 @@ const getResultData = (result) => {
 
 }
 
+const getMailConfig = () => {
+
+  console.log(`getMailConfig() `)
+
+  const mail_user = process.env.Techu_MAIL_SENDER_USER
+  const mail_pass = process.env.Techu_MAIL_SENDER_PASS
+
+  return {
+    service: 'Gmail',
+    auth: {
+      user: mail_user,
+      pass: mail_pass,
+    },
+  }
+}
+
 const getMongoConfig = () => {
 
   console.log(`getMongoConfig() `)
@@ -37,6 +53,7 @@ const getMongoConfig = () => {
 
 }
 
+module.exports.getMailConfig = getMailConfig
 module.exports.getMongoConfig = getMongoConfig
 module.exports.getResultData = getResultData
 

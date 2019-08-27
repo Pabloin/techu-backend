@@ -5,6 +5,10 @@ const cors = require('cors')
 const config = require('../lib/config');
 const logger = require('../lib/logger');
 
+
+
+
+
 const log = logger(config.logger);
 const app = express();
 
@@ -31,19 +35,17 @@ app.use(function (req, res, next) {
 try {
 
   // Current Path: process.cwd()
-
-  // const ENV_PATH = (fs.existsSync('.env')) ? '.env' : 'TuOpenBank/v2/.env'
-
   const ENV_PATH = '.env'
 
   var ENV_CONFIG = require('dotenv').config({path: ENV_PATH })
 
-  console.log(`ENV_CONFIG: ${JSON.stringify(ENV_CONFIG)}`)
+  // if (process.env.Techu_RUNTIME_LIVE === "localhost") {
+  //     console.log(`ENV_CONFIG: ${JSON.stringify(ENV_CONFIG)}`)
+  // }
 
 } catch(err) {
   console.error(err)
 }
-
 
 
 mongoose.connect(Common.getMongoConfig(), function(err, res) {
