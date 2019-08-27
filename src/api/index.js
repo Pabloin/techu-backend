@@ -47,9 +47,6 @@ try {
   console.error(err)
 }
 
-const mailSender = require('../api/core/db.test');
-mailSender.testMailSender();
-
 
 mongoose.connect(Common.getMongoConfig(), function(err, res) {
   if(err) {

@@ -32,7 +32,7 @@ module.exports.testMailSender = () => {
     text: 'Contenido del email v2'
   };
 
-  var MailSender         = require('./MailSender').sendMail(options)
+  var MailSender = require('./MailSender').sendMail(options)
 
   console.log(`testDatabaseModel() rta = `);
 }
