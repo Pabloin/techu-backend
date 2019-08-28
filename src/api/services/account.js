@@ -1,6 +1,5 @@
 const ServerError = require('../../lib/error');
 var AccountModel = require('../core/db.models').AccountModel
-var UserModel = require('../core/db.models').UserModel
 
 const CONST = require('../core/Const');
 const CORE_DB = require('../core/db.test');
@@ -39,64 +38,6 @@ module.exports.getAccount = async (options) => {
     data: 'getAccount v2 ok!'
   };
 };
-
-/**
- * @param {Object} options
- * @param {String} options.username username
- * @throws {Error}
- * @return {Promise}
- */
-module.exports.getAccountByUsername = async (options) => {
-
-  console.log(`getAccountByUsername(${options})`)
-
-  var username = options.username;
-
-  // Paso 1: Usuario es obligatorio
-  if (!username) {
-    return {
-      status: 400,
-      data: `User "username" no pueden ser nulo.`
-    };
-  }
-
-  // Paso 2: Chequea que el usuario exista
-  var userList = await UserModel
-                    .find({ 'username' : username }, 'userId username isLogged')
-                    .exec();
-
-  console.log(`existe usuario (${username}) rta = ${JSON.stringify(userList)}`);
-
-  if (userList.length === 0) {
-    return {
-      status: 404,
-      data: `User "${username}" not found.`
-    };
-  }
-
-  // Paso 3: Recupera el userId
-  var user = userList[0]
-
-  // Paso 4: Recupero la lista de cuentas / productos
-  var accountList = await AccountModel
-                    .find({ 'userId' : user.userId }, {})
-                    .exec();
-
-  console.log(`productos (${user.userId}) rta = ${JSON.stringify(accountList)}`);
-
-  if (accountList.length === 0) {
-    return {
-      status: 404,
-      data: `Productos para "${user.userId}" not found.`
-    };
-  }
-
-  return {
-    status: 200,
-    data: accountList
-  };
-};
-
 
 /**
  * @param {Object} user

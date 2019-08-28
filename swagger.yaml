@@ -136,28 +136,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
-  /account/user/{username}:
-    get:
-      x-swagger-router-controller: Account
-      operationId: getAccountByUsername
-      tags:
-        - /account
-      summary: Account detail
-      description: Retorna lista de cuentas / producto por usuario
-      parameters:
-        - name: username
-          in: path
-          description: username
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: retorna lista de cuenta del usuario.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountList'
   /product/{productId}:
     get:
       x-swagger-router-controller: Product
@@ -261,14 +239,6 @@ components:
           type: string
         accountBalance:
           type: integer
-    AccountList:
-      type: object
-      properties:
-        products:
-          description: Account List
-          type: array
-          items:
-            $ref: '#/components/schemas/Account'
     Product:
       properties:
         productId:
