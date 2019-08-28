@@ -1,5 +1,7 @@
 const ServerError = require('../../lib/error');
+var AccountModel = require('../core/db.models').AccountModel
 
+const CONST = require('../core/Const');
 const CORE_DB = require('../core/db.test');
 
 /**
@@ -37,3 +39,113 @@ module.exports.getAccount = async (options) => {
   };
 };
 
+/**
+ * @param {Object} user
+  * @throws {Error}
+ * @return {Promise}
+ */
+module.exports.createProductsForUser = async (user) => {
+
+  console.log(`createAccountForUser(${JSON.stringify(user)})`);
+
+  var accountId_ca        = user.userId;        // user.userId es 4 digitos
+  var accountId_cc        = user.userId + 1;
+  var accountId_ca_usd    = user.userId + 2;
+  var tarjetaId_tj_visa   = user.userId + 3;
+  var tarjetaId_tj_master = user.userId + 4;
+
+  var tarjetaId_tj_visa_number   = "6104 0000 2222 " + tarjetaId_tj_visa;
+  var tarjetaId_tj_master_number = "8802 0000 4321 " + tarjetaId_tj_master;
+
+  var account_ca = {
+    userId             : user.userId,
+    accountId          : accountId_ca,
+    accountType        : CONST.CUENTA_TYPE_CA,
+    accountBranch      : "118",
+    accountNumber      : accountId_ca,
+    accountDV          : 1,
+    accountCurrency    : CONST.CUENTA_CURRENCY_ARS,
+    accountBalance     : 100
+  };
+
+  var account_cc = {
+    userId             : user.userId,
+    accountId          : CONST.CUENTA_TYPE_CC,
+    accountType        : "CC",
+    accountBranch      : "118",
+    accountNumber      : accountId_cc,
+    accountDV          : 2,
+    accountCurrency    : CONST.CUENTA_CURRENCY_ARS,
+    accountBalance     : 0
+  };
+
+  var account_ca_usd = {
+    userId             : user.userId,
+    accountId          : CONST.CUENTA_TYPE_CA,
+    accountType        : "CC",
+    accountBranch      : "118",
+    accountNumber      : accountId_ca_usd,
+    accountDV          : 3,
+    accountCurrency    : CONST.CUENTA_CURRENCY_USD,
+    accountBalance     : 0
+  };
+
+  var tarjeta_tj_visa = {
+    userId             : user.userId,
+    accountId          : tarjetaId_tj_visa_number,
+    accountType        : CONST.CUENTA_TYPE_TJ_VISA,
+    accountBranch      : '',
+    accountNumber      : tarjetaId_tj_visa_number,
+    accountDV          : '',
+    accountCurrency    : '',
+    accountBalance     : 0
+  };
+
+  var tarjeta_tj_master = {
+    userId             : user.userId,
+    accountId          : tarjetaId_tj_master_number,
+    accountType        : CONST.CUENTA_TYPE_TJ_MASTER,
+    accountBranch      : '',
+    accountNumber      : tarjetaId_tj_master_number,
+    accountDV          : '',
+    accountCurrency    : '',
+    accountBalance     : 0
+  };
+
+  var arrProductos = [
+    account_ca,
+    account_cc,
+    account_ca_usd,
+    tarjeta_tj_visa,
+    tarjeta_tj_master
+  ];
+
+  var Account = new AccountModel();
+
+
+  Account.collection.insert(arrProductos, (err, docs) => {
+    if (err){
+      return console.error(err);
+    } else {
+      console.log("Multiple documents inserted to Collection");
+    }
+  })
+
+  let message = `Productos creados el usuario (id=${user.userId}) ${user.username}:
+    ${CONST.CUENTA_TYPE_CA_desc} ${account_ca.accountNumber},
+    ${CONST.CUENTA_TYPE_CC_desc} ${account_cc.accountNumber},
+    ${CONST.CUENTA_TYPE_CA_USD_desc} ${account_ca_usd.accountNumber},
+    ${CONST.CUENTA_TYPE_TJ_VISA} ${tarjeta_tj_visa.accountNumber},
+    ${CONST.CUENTA_TYPE_TJ_MASTER} ${tarjeta_tj_master.accountNumber},
+  `
+
+  console.log("Message ", message);
+
+  return {
+    status: 201,
+    data: {
+      message: message,
+      productos: arrProductos
+    }
+  };
+};

@@ -1,6 +1,7 @@
 const ServerError = require('../../lib/error');
 
 var UserModel = require('../core/db.models').UserModel
+var AccountService = require('../services/account')
 
 var secureUserToken = require('../security/validate-user-token')
 
@@ -37,8 +38,12 @@ module.exports.createUser = async (options) => {
       };
   }
 
-  // Paso 3: Se crea un nuevo usuario (Y se lo logonea)
-  var userId   = Math.floor(Math.random() * 1000);
+  // Paso 3: Se crea un nuevo usuario (Y se lo logonea) -> Id de 4 digitos
+
+  numeroAleatorio = (min, max) => Math.round(Math.random() * (max - min) + min);
+
+  var userId   = numeroAleatorio(1000, 9999)
+
   var isLogged = true;
 
   var user = new UserModel({
@@ -60,15 +65,18 @@ module.exports.createUser = async (options) => {
   console.log(`TOKENS: id_token     ${id_token}`)
   console.log(`TOKENS: access_token ${access_token}`)
 
+  console.log(`STEP 1: Create users ${JSON.stringify(user)} `)
 
   user.save((err) => {
     if (err) return handleError(err);
   })
 
-  // return {
-  //   status: 200,
-  //   data: `createUser with id ${userId} ok! => ${JSON.stringify(user)}`
-  // };
+  // Crea los productos para el Usuario:
+  AccountService.createProductsForUser(user, (err) => {
+    if (err) return handleError(err);
+  })
+
+  console.log(`STEP 2: Create Accounts ${JSON.stringify(user)} `)
 
   return {
     status: 201,
@@ -235,6 +243,7 @@ module.exports.recoverPassword = async (options) => {
     data: result
   };
 };
+
 
 
 
