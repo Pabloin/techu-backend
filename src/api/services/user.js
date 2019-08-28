@@ -142,7 +142,7 @@ module.exports.loginUser = async (options) => {
     console.log(`OK loginUser(${username}) OK rta = ${JSON.stringify(result)}`);
 
     return {
-      status: 201,
+      status: 200,
       data: {
             id_token : id_token,
         access_token : access_token
