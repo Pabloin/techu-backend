@@ -3,7 +3,6 @@ const account = require('../services/account');
 const Common = require('../core/Common');
 const router = new express.Router();
 
-
 /**
  * Retorna la informacion de una cuenta
  */
