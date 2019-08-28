@@ -1,6 +1,7 @@
 const ServerError = require('../../lib/error');
 
 var UserModel = require('../core/db.models').UserModel
+var AccountModel = require('../core/db.models').AccountModel
 
 var secureUserToken = require('../security/validate-user-token')
 
@@ -37,8 +38,12 @@ module.exports.createUser = async (options) => {
       };
   }
 
-  // Paso 3: Se crea un nuevo usuario (Y se lo logonea)
-  var userId   = Math.floor(Math.random() * 1000);
+  // Paso 3: Se crea un nuevo usuario (Y se lo logonea) -> Id de 4 digitos
+
+  numeroAleatorio = (min, max) => Math.round(Math.random() * (max - min) + min);
+
+  var userId   = numeroAleatorio(1000, 9999)
+
   var isLogged = true;
 
   var user = new UserModel({
@@ -65,10 +70,9 @@ module.exports.createUser = async (options) => {
     if (err) return handleError(err);
   })
 
-  // return {
-  //   status: 200,
-  //   data: `createUser with id ${userId} ok! => ${JSON.stringify(user)}`
-  // };
+  user.createAccountForUser
+
+  // TODO: Crear Cuenta
 
   return {
     status: 201,
@@ -235,6 +239,7 @@ module.exports.recoverPassword = async (options) => {
     data: result
   };
 };
+
 
 
 
