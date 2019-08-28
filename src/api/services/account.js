@@ -1,5 +1,6 @@
 const ServerError = require('../../lib/error');
 var AccountModel = require('../core/db.models').AccountModel
+var UserModel = require('../core/db.models').UserModel
 
 const CONST = require('../core/Const');
 const CORE_DB = require('../core/db.test');
