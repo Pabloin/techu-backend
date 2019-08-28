@@ -44,20 +44,20 @@ module.exports.getAccount = async (options) => {
   * @throws {Error}
  * @return {Promise}
  */
-module.exports.createAccountForUser = async (user) => {
+module.exports.createProductsForUser = async (user) => {
 
   console.log(`createAccountForUser(${JSON.stringify(user)})`);
 
-  var accountId_ca        = userId;        // userId es 4 digitos
-  var accountId_cc        = userId + 1;
-  var accountId_ca_usd    = userId + 2;
-  var tarjetaId_tj_visa   = userId + 3;
-  var tarjetaId_tj_master = userId + 4;
+  var accountId_ca        = user.userId;        // user.userId es 4 digitos
+  var accountId_cc        = user.userId + 1;
+  var accountId_ca_usd    = user.userId + 2;
+  var tarjetaId_tj_visa   = user.userId + 3;
+  var tarjetaId_tj_master = user.userId + 4;
 
   var tarjetaId_tj_visa_number   = "6104 0000 2222 " + tarjetaId_tj_visa;
   var tarjetaId_tj_master_number = "8802 0000 4321 " + tarjetaId_tj_master;
 
-  var account_ca = new AccountModel({
+  var account_ca = {
     userId             : user.userId,
     accountId          : accountId_ca,
     accountType        : CONST.CUENTA_TYPE_CA,
@@ -66,9 +66,9 @@ module.exports.createAccountForUser = async (user) => {
     accountDV          : 1,
     accountCurrency    : CONST.CUENTA_CURRENCY_ARS,
     accountBalance     : 100
-  });
+  };
 
-  var account_cc = new AccountModel({
+  var account_cc = {
     userId             : user.userId,
     accountId          : CONST.CUENTA_TYPE_CC,
     accountType        : "CC",
@@ -77,9 +77,9 @@ module.exports.createAccountForUser = async (user) => {
     accountDV          : 2,
     accountCurrency    : CONST.CUENTA_CURRENCY_ARS,
     accountBalance     : 0
-  });
+  };
 
-  var account_ca_usd = new AccountModel({
+  var account_ca_usd = {
     userId             : user.userId,
     accountId          : CONST.CUENTA_TYPE_CA,
     accountType        : "CC",
@@ -88,9 +88,9 @@ module.exports.createAccountForUser = async (user) => {
     accountDV          : 3,
     accountCurrency    : CONST.CUENTA_CURRENCY_USD,
     accountBalance     : 0
-  });
+  };
 
-  var tarjeta_tj_visa = new AccountModel({
+  var tarjeta_tj_visa = {
     userId             : user.userId,
     accountId          : tarjetaId_tj_visa_number,
     accountType        : CONST.CUENTA_TYPE_TJ_VISA,
@@ -99,9 +99,9 @@ module.exports.createAccountForUser = async (user) => {
     accountDV          : '',
     accountCurrency    : '',
     accountBalance     : 0
-  });
+  };
 
-  var tarjeta_tj_master = new AccountModel({
+  var tarjeta_tj_master = {
     userId             : user.userId,
     accountId          : tarjetaId_tj_master_number,
     accountType        : CONST.CUENTA_TYPE_TJ_MASTER,
@@ -110,37 +110,42 @@ module.exports.createAccountForUser = async (user) => {
     accountDV          : '',
     accountCurrency    : '',
     accountBalance     : 0
-  });
+  };
+
+  var arrProductos = [
+    account_ca,
+    account_cc,
+    account_ca_usd,
+    tarjeta_tj_visa,
+    tarjeta_tj_master
+  ];
+
+  var Account = new AccountModel();
 
 
-  account_ca.save((err) => {
-    if (err) return handleError(err);
+  Account.collection.insert(arrProductos, (err, docs) => {
+    if (err){
+      return console.error(err);
+    } else {
+      console.log("Multiple documents inserted to Collection");
+    }
   })
 
-  account_cc.save((err) => {
-    if (err) return handleError(err);
-  })
+  let message = `Productos creados el usuario (id=${user.userId}) ${user.username}:
+    ${CONST.CUENTA_TYPE_CA_desc} ${account_ca.accountNumber},
+    ${CONST.CUENTA_TYPE_CC_desc} ${account_cc.accountNumber},
+    ${CONST.CUENTA_TYPE_CA_USD_desc} ${account_ca_usd.accountNumber},
+    ${CONST.CUENTA_TYPE_TJ_VISA} ${tarjeta_tj_visa.accountNumber},
+    ${CONST.CUENTA_TYPE_TJ_MASTER} ${tarjeta_tj_master.accountNumber},
+  `
 
-  account_ca_usd.save((err) => {
-    if (err) return handleError(err);
-  })
-
-  tarjeta_tj_visa.save((err) => {
-    if (err) return handleError(err);
-  })
-
-  tarjeta_tj_master.save((err) => {
-    if (err) return handleError(err);
-  })
+  console.log("Message ", message);
 
   return {
     status: 201,
-    data: `Productos creados el usuario (id=${user.userId}) ${user.username}:
-            ${CONST.CUENTA_TYPE_CA_desc} ${account_ca.accountNumber},
-            ${CONST.CUENTA_TYPE_CC_desc} ${account_cc.accountNumber},
-            ${CONST.CUENTA_TYPE_CA_USD_desc} ${account_ca_usd.accountNumber},
-            ${CONST.CUENTA_TYPE_TJ_VISA} ${tarjeta_tj_visa.accountNumber},
-            ${CONST.CUENTA_TYPE_TJ_MASTER} ${tarjeta_tj_master.accountNumber},
-           `
+    data: {
+      message: message,
+      productos: arrProductos
+    }
   };
 };

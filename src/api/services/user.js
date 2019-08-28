@@ -1,7 +1,7 @@
 const ServerError = require('../../lib/error');
 
 var UserModel = require('../core/db.models').UserModel
-var AccountModel = require('../core/db.models').AccountModel
+var AccountService = require('../services/account')
 
 var secureUserToken = require('../security/validate-user-token')
 
@@ -65,14 +65,18 @@ module.exports.createUser = async (options) => {
   console.log(`TOKENS: id_token     ${id_token}`)
   console.log(`TOKENS: access_token ${access_token}`)
 
+  console.log(`STEP 1: Create users ${JSON.stringify(user)} `)
 
   user.save((err) => {
     if (err) return handleError(err);
   })
 
-  user.createAccountForUser
+  // Crea los productos para el Usuario:
+  AccountService.createProductsForUser(user, (err) => {
+    if (err) return handleError(err);
+  })
 
-  // TODO: Crear Cuenta
+  console.log(`STEP 2: Create Accounts ${JSON.stringify(user)} `)
 
   return {
     status: 201,
