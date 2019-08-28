@@ -48,7 +48,7 @@ module.exports.getAccount = async (options) => {
  */
 module.exports.getAccountByUsername = async (options) => {
 
-  console.log(`getAccountByUsername(${options})`)
+  console.log(`getAccountByUsername(${options}) `)
 
   var username = options.username;
 
@@ -56,7 +56,7 @@ module.exports.getAccountByUsername = async (options) => {
   if (!username) {
     return {
       status: 400,
-      data: `User "username" no pueden ser nulo.`
+      data: `User "username" no pueden ser nulo`
     };
   }
 

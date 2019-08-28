@@ -56,7 +56,7 @@ module.exports.createUser = async (options) => {
       isLogged  : isLogged,
   });
 
-  console.log(`To Save ${JSON.stringify(user)} `)
+  console.log(`To Save ${JSON.stringify(user)}`)
 
 
   var id_token = secureUserToken.createIdToken(user)
