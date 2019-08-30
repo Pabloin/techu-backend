@@ -194,6 +194,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TransactionList'
+  /transaction/{fromAccountId}:
+    post:
+      x-swagger-router-controller: Transaction
+      operationId: doTransferencia
+      tags:
+        - /transaction
+      summary: Realiza una transferencia
+      description: Realiza una transferencia desde el origen al destino, por importe y tipo de cambio
+      parameters:
+        - name: toAccountId
+          in: path
+          description: cuenta destino
+          required: true
+          schema:
+            type: integer
+        - name: importe
+          in: path
+          description: importe
+          required: true
+          schema:
+            type: integer
+        - name: cotizacion
+          in: path
+          description: cotizacion del tipo de cambio
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: retorna la info de la transaccion realizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
   /quote/{quoteId}:
     get:
       x-swagger-router-controller: Quote
