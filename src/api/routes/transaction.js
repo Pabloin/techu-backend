@@ -24,4 +24,26 @@ router.get('/:userId', async (req, res, next) => {
   }
 });
 
+/**
+ * Realiza una transferencia desde el origen al destino, por 
+ * importe y tipo de cambio
+ */
+router.post('/:fromAccountId', async (req, res, next) => {
+  const options = {
+    toAccountId: req.params['toAccountId'],
+    importe: req.params['importe'],
+    cotizacion: req.params['cotizacion']
+  };
+
+  try {
+    const result = await transaction.doTransferencia(options);
+    res.status(result.status || 200).send(result.data);
+  } catch (err) {
+    return res.status(500).send({
+      status: 500,
+      error: 'Server Error'
+    });
+  }
+});
+
 module.exports = router;
