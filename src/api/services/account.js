@@ -107,11 +107,11 @@ module.exports.createProductsForUser = async (user) => {
 
   console.log(`createAccountForUser(${JSON.stringify(user)})`);
 
-  var accountId_ca        = user.userId;        // user.userId es 4 digitos
-  var accountId_cc        = user.userId + 1;
-  var accountId_ca_usd    = user.userId + 2;
-  var tarjetaId_tj_visa   = user.userId + 3;
-  var tarjetaId_tj_master = user.userId + 4;
+  var accountId_ca        = user.userId + 1;        // user.userId es 4 digitos
+  var accountId_cc        = user.userId + 2;
+  var accountId_ca_usd    = user.userId + 3;
+  var tarjetaId_tj_visa   = user.userId + 4;
+  var tarjetaId_tj_master = user.userId + 5;
 
   var tarjetaId_tj_visa_number   = "6104 0000 2222 " + tarjetaId_tj_visa;
   var tarjetaId_tj_master_number = "8802 0000 4321 " + tarjetaId_tj_master;
@@ -131,8 +131,8 @@ module.exports.createProductsForUser = async (user) => {
 
   var account_cc = {
     userId             : user.userId,
-    accountId          : CONST.CUENTA_TYPE_CC,
-    accountType        : "CC",
+    accountId          : accountId_cc,
+    accountType        : CONST.CUENTA_TYPE_CC,
     accountBranch      : "118",
     accountNumber      : accountId_cc,
     accountDV          : 2,
@@ -142,8 +142,8 @@ module.exports.createProductsForUser = async (user) => {
 
   var account_ca_usd = {
     userId             : user.userId,
-    accountId          : CONST.CUENTA_TYPE_CA,
-    accountType        : "CC",
+    accountId          : accountId_ca_usd,
+    accountType        : CONST.CUENTA_TYPE_CA,
     accountBranch      : "118",
     accountNumber      : accountId_ca_usd,
     accountDV          : 3,
