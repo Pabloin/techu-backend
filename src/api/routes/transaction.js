@@ -30,10 +30,10 @@ router.get('/:userId', async (req, res, next) => {
  */
 router.post('/:fromAccountId', async (req, res, next) => {
   const options = {
-    fromAccountId: fromAccountId,
-    toAccountId: req.params['toAccountId'],
-    importe: req.params['importe'],
-    cotizacion: req.params['cotizacion']
+    fromAccountId: req.params['fromAccountId'],
+    toAccountId: req.body['toAccountId'],
+    importe: req.body['importe'],
+    cotizacion: req.body['cotizacion']
   };
 
   try {
