@@ -1,9 +1,9 @@
-const ServerError = require('../../lib/error');
-var AccountModel = require('../core/db.models').AccountModel
-var UserModel = require('../core/db.models').UserModel
-
-const CONST = require('../core/Const');
-const CORE_DB = require('../core/db.test');
+const ServerError = require('../../lib/error')
+const Common = require('../core/Common')
+const CONST = require('../core/Const')
+const CORE_DB = require('../core/db.test')
+const AccountModel = require('../core/db.models').AccountModel
+const UserModel = require('../core/db.models').UserModel
 
 /**
  * @param {Object} options
@@ -116,6 +116,8 @@ module.exports.createProductsForUser = async (user) => {
   var tarjetaId_tj_visa_number   = "6104 0000 2222 " + tarjetaId_tj_visa;
   var tarjetaId_tj_master_number = "8802 0000 4321 " + tarjetaId_tj_master;
 
+  var saldoInicial = 10000 + Common.numeroAleatorio(-3000, 3000)   // 10.000 +- 30%
+
   var account_ca = {
     userId             : user.userId,
     accountId          : accountId_ca,
@@ -124,7 +126,7 @@ module.exports.createProductsForUser = async (user) => {
     accountNumber      : accountId_ca,
     accountDV          : 1,
     accountCurrency    : CONST.CUENTA_CURRENCY_ARS,
-    accountBalance     : 100
+    accountBalance     : saldoInicial
   };
 
   var account_cc = {
