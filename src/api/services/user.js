@@ -1,9 +1,9 @@
 const ServerError = require('../../lib/error');
+const Common = require('../core/Common')
+const AccountService = require('../services/account')
+const secureUserToken = require('../security/validate-user-token')
+const UserModel = require('../core/db.models').UserModel
 
-var UserModel = require('../core/db.models').UserModel
-var AccountService = require('../services/account')
-
-var secureUserToken = require('../security/validate-user-token')
 
 /**
  * @param {Object} options
@@ -62,9 +62,9 @@ module.exports.createUser = async (options) => {
 
   // Paso 3: Se crea un nuevo usuario (Y se lo logonea) -> Id de 4 digitos
 
-  numeroAleatorio = (min, max) => Math.round(Math.random() * (max - min) + min);
+  
 
-  var userId   = numeroAleatorio(1000, 9999)
+  var userId   = Common.numeroAleatorio(1000, 9999)
 
   var isLogged = true;
 
