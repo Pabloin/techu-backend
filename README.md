@@ -7,6 +7,10 @@ Open API Bank
 npm i --save cors dotenv mongoose
 npm i --save express-jwt  lodash  jsonwebtoken 
 
+# Tools 
+
+npm install -g swagger-node-codegen
+npm install --save swagger-node-codegen
 
 # Environments:
 
