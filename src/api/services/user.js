@@ -10,6 +10,28 @@ var secureUserToken = require('../security/validate-user-token')
  * @throws {Error}
  * @return {Promise}
  */
+module.exports.getUsersList = async (options) => {
+
+  var userList = await UserModel
+    .find({ }, 'userId username firstName lastName email')
+    .exec();
+
+  if (userList.length == 0) {
+    console.log('No hay usuarios en el sistema.')
+  }
+
+  return {
+    status: 200,
+    data: userList
+  };
+};
+
+
+/**
+ * @param {Object} options
+ * @throws {Error}
+ * @return {Promise}
+ */
 module.exports.createUser = async (options) => {
 
   var username = options.body.username

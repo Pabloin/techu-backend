@@ -18,6 +18,20 @@ servers:
     description: Production Environment
 paths:
   /user:
+    get:
+      x-swagger-router-controller: User
+      operationId: getUsersList
+      tags:
+        - /user
+      summary: Retorna la lista de usuario
+      description: Lista de los usuarios del sistema
+      requestBody:
+        required: true
+        description: Array con la lista de usuarios
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserList'
     post:
       x-swagger-router-controller: User
       operationId: createUser
@@ -161,7 +175,7 @@ paths:
   /transaction/{userId}:
     get:
       x-swagger-router-controller: Transaction
-      operationId: getTransaction
+      operationId: getTransactionList
       tags:
         - /transaction
       summary: lista de transacciones de un usuario
@@ -221,6 +235,14 @@ components:
         isLogged:
           type: boolean
           default: false
+    UserList:
+      type: object
+      properties:
+        products:
+          description: User List
+          type: array
+          items:
+            $ref: '#/components/schemas/UserList'
     Account:
       properties:
         userId:

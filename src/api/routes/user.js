@@ -4,6 +4,27 @@ const Common = require('../core/Common');
 
 const router = new express.Router();
 
+/**
+ * Lista de los usuarios del sistema.
+ */
+router.get('/', async (req, res, next) => {
+
+  console.log('GET /users/ Lista Usuarios')
+
+  const options = {
+    body: req.body
+  };
+
+  try {
+    const result = await user.getUsersList(options);
+    res.status(200).send(result.data);
+  } catch (err) {
+    return res.status(500).send({
+      status: 500,
+      error: 'Server Error'
+    });
+  }
+});
 
 /**
  * Alta de un usuario con credenciales de login validas
