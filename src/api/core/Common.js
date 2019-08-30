@@ -1,6 +1,7 @@
-const is_HTTP_OK = (httpCode) => {
-  return httpCode >= 200 && httpCode < 300
-}
+const numeroAleatorio = (min, max) => Math.round(Math.random() * (max - min) + min);
+
+const is_HTTP_OK = (httpCode) => httpCode >= 200 && httpCode < 300
+
 
 const getResultData = (result) => {
 
@@ -15,7 +16,6 @@ const getResultData = (result) => {
     status: result.status,
      error: result.data
   }
-
 }
 
 const getMailConfig = () => {
@@ -53,8 +53,8 @@ const getMongoConfig = () => {
 
 }
 
+module.exports.numeroAleatorio = numeroAleatorio
 module.exports.getMailConfig = getMailConfig
 module.exports.getMongoConfig = getMongoConfig
 module.exports.getResultData = getResultData
-
 
