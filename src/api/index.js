@@ -62,7 +62,7 @@ mongoose.connect(Common.getMongoConfig(), function(err, res) {
  */
 var secureScopeToken = require('./security/validate-scope-token')
 
-// app.use('/user',     secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
+app.get('/user',        secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
 app.use('/account',     secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
 app.use('/product',     secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
 app.use('/transaction', secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
