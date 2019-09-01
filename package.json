@@ -12,7 +12,7 @@
     "url" : "https://github.com/Pabloin/techu-backend.git"
   },
   "scripts": {
-    "start": "node src/bin/www  | bunyan",
+    "start": "node src/bin/www | bunyan",
     "dev": "node src/bin/www | bunyan"
   },
   "dependencies": {
