@@ -1,5 +1,6 @@
 FROM node:10-alpine
 
+RUN apk add g++ make python
 
 RUN mkdir -p /app/node_modules && \
     chown -R node:node /app
