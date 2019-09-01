@@ -50,10 +50,17 @@ module.exports.doTransferencia = async (options) => {
   
   console.log(`doTransferencia from ${JSON.stringify(fromtAccount)} to  ${JSON.stringify(toAccount)}`);
 
-  if (fromtAccount === null || toAccount === null) {
+  if (fromtAccount === null) {
     return {
       status: 404,
-      data: `Cuentas inexitentes`
+      data: `Cuenta origen ${options.fromAccountId} inexistente`
+    };
+  }
+  
+  if (toAccount === null) {
+    return {
+      status: 404,
+      data: `Cuenta destino ${options.toAccountId} inexistente`
     };
   }
 
