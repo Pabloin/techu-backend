@@ -25,13 +25,13 @@ paths:
         - /user
       summary: Retorna la lista de usuario
       description: Lista de los usuarios del sistema
-      requestBody:
-        required: true
-        description: Array con la lista de usuarios
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserList'
+      responses:
+        '200':
+          description: retorna lista de usuarios
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
     post:
       x-swagger-router-controller: User
       operationId: createUser
@@ -203,6 +203,12 @@ paths:
       summary: Realiza una transferencia
       description: Realiza una transferencia desde el origen al destino, por importe y tipo de cambio
       parameters:
+        - name: fromAccountId
+          in: path
+          description: cuenta origen
+          required: true
+          schema:
+            type: integer
         - name: toAccountId
           in: path
           description: cuenta destino
@@ -218,7 +224,7 @@ paths:
         - name: cotizacion
           in: path
           description: cotizacion del tipo de cambio
-          required: false
+          required: true
           schema:
             type: integer
       responses:
