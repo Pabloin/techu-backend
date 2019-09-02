@@ -13,11 +13,11 @@ const mongoose = require('mongoose').set('debug', true)
  */
 module.exports.getTransactionList = async (options) => {
 
-  var fromtAccount = await TransactiontModel.find({ 'accountId' : options.accountId }, {}).exec();
+  var  fromAccount = await TransactiontModel.find({ 'accountId' : options.accountId }, {}).exec();
 
   return {
     status: 200,
-    data: fromtAccount
+    data:  fromAccount
   };
 };
 
@@ -55,12 +55,12 @@ module.exports.doExchange = async (options) => {
   if (options.tipoOperacion === undefined) {
     options.tipoOperacion = CONST.OP_EXCHANGE
   }
-  var fromtAccount = await AccountModel.findOne({ 'accountId' : options.fromAccountId }, {}).exec();
+  var  fromAccount = await AccountModel.findOne({ 'accountId' : options.fromAccountId }, {}).exec();
   var    toAccount = await AccountModel.findOne({ 'accountId' : options.toAccountId }, {}).exec();
   
-  console.log(`Operacion ${options.tipoOperacion}: from ${JSON.stringify(fromtAccount)} to  ${JSON.stringify(toAccount)}`);
+  console.log(`Operacion ${options.tipoOperacion}: from ${JSON.stringify( fromAccount)} to  ${JSON.stringify(toAccount)}`);
 
-  if (fromtAccount === null) {
+  if ( fromAccount === null) {
     return {
       status: 404,
       data: `Cuenta origen ${options.fromAccountId} inexistente`
@@ -74,7 +74,7 @@ module.exports.doExchange = async (options) => {
     };
   }
 
-  var mismaMoneda = (fromtAccount.accountCurrency === toAccount.accountCurrency);
+  var mismaMoneda = ( fromAccount.accountCurrency === toAccount.accountCurrency);
 
 
   console.log(`OPERACION: ${options.tipoOperacion}, Misma Moneda ${mismaMoneda}. `)
@@ -97,16 +97,16 @@ module.exports.doExchange = async (options) => {
   }
 
 
-  if (fromtAccount.accountType === CONST.CUENTA_TYPE_CA) {
-    if (fromtAccount.accountCurrency === CONST.CUENTA_CURRENCY_ARS) {
-      if (fromtAccount.accountBalance - options.importe < 0) {
+  if ( fromAccount.accountType === CONST.CUENTA_TYPE_CA) {
+    if ( fromAccount.accountCurrency === CONST.CUENTA_CURRENCY_ARS) {
+      if ( fromAccount.accountBalance - options.importe < 0) {
         return {
           status: 400,
           data: `Saldo insuficiente en pesos`
         };
       }
     } else {
-      if (fromtAccount.accountBalance - options.importe < 0) {
+      if ( fromAccount.accountBalance - options.importe < 0) {
         return {
           status: 400,
           data: `Saldo insuficiente en dolares`
@@ -116,39 +116,56 @@ module.exports.doExchange = async (options) => {
   }
 
   atomicTransferencia = async (tipoOperacion, 
-                               fromtAccount, toAccount, 
+                                fromAccount, toAccount, 
                                importe, cotizacion) => {
 
-    let fromtAccountBalance = Number.parseFloat(fromtAccount.accountBalance)
-    let    toAccountBalance = Number.parseFloat(   toAccount.accountBalance)
+    let fromAccountBalance = Number.parseFloat(fromAccount.accountBalance);
+    let   toAccountBalance = Number.parseFloat(  toAccount.accountBalance);
+                           
+    let fromTransactionBalance = 0
+    let   toTransactionBalance = 0
 
-    if (fromtAccount.accountCurrency === toAccount.accountCurrency) {
-        fromtAccountBalance -= importe;
-           toAccountBalance += importe;
+    isDolarCompra = (currencyOrigen) => currencyOrigen === CONST.CUENTA_CURRENCY_ARS
+    isDolarVenta  = (currencyOrigen) => currencyOrigen === CONST.CUENTA_CURRENCY_USD
+
+    if (options.tipoOperacion === CONST.OP_TRANSFERENCIA) {
+           fromTransactionBalance = importe * -1;
+             toTransactionBalance = importe;
     } else {
-      if (fromtAccount.accountCurrency === CONST.CUENTA_CURRENCY_ARS) {
-          fromtAccountBalance -= importe;
-             toAccountBalance += importe / cotizacion;
+      // OPERACION TIPO EXCHANGE: El importe es en USD
+      if (isDolarCompra(fromAccount.accountCurrency)) {
+           fromTransactionBalance = importe * -1 * cotizacion;
+             toTransactionBalance = importe;
       } else {
-          fromtAccountBalance -= importe;
-             toAccountBalance += importe * cotizacion;
+           fromTransactionBalance = importe * -1;
+             toTransactionBalance = importe * cotizacion;
       }
     }
 
-    console.log(`Operacion ${tipoOperacion}: FROM ${fromtAccountBalance} TO ${toAccountBalance} `)
+        fromAccountBalance += fromTransactionBalance;
+          toAccountBalance +=   toTransactionBalance;
 
-    descTipoOp = (tipoOperacion) => (tipoOperacion == CONST.OP_TRANSFERENCIA) 
-                                  ? `Transferencia entre cuentas`
-                                  : `Compra Venta Dólares`
+    console.log(`Operacion ${tipoOperacion}: 
+                      FROM: [${fromAccount}  
+                        TO: ${toAccount}
+                   IMPORTE: ${importe}
+                   fromTransactionBalance: ${fromTransactionBalance}
+                   toTransactionBalance: ${toTransactionBalance}
+                `)
+
+    descTipoOp = (tipoOperacion) => (tipoOperacion == CONST.OP_TRANSFERENCIA) ? `Transferencia entre cuentas`
+                                  : (isDolarCompra(fromAccount.accountCurrency)) ? `Compra de Dolares` 
+                                  : (isDolarVenta(fromAccount.accountCurrency)) ? `Venta de Dolares` 
+                                  : `Transaccion Monetaria` 
 
     var now = new Date();
     var movimientoDebito = new TransactiontModel({
-      userId                  : fromtAccount.userId,
-      accountId               : fromtAccount.accountId,
+      userId                  : fromAccount.userId,
+      accountId               : fromAccount.accountId,
       transactionDate         : now,
-      transactionCurrency     : fromtAccount.accountCurrency,
-      transactionDescription  : tipoOperacion,
-      transactionBalance      : importe * -1,
+      transactionCurrency     : fromAccount.accountCurrency,
+      transactionDescription  : descTipoOp(tipoOperacion),
+      transactionBalance      : fromTransactionBalance,
       timestamp               : now
     });
 
@@ -157,8 +174,8 @@ module.exports.doExchange = async (options) => {
       accountId               : toAccount.accountId,
       transactionDate         : now,
       transactionCurrency     : toAccount.accountCurrency,
-      transactionDescription  : tipoOperacion,
-      transactionBalance      : importe,
+      transactionDescription  : descTipoOp(tipoOperacion),
+      transactionBalance      : toTransactionBalance,
       timestamp               : now
     });
 
@@ -167,10 +184,10 @@ module.exports.doExchange = async (options) => {
 
     try {
 
-      fromtAccount.accountBalance = fromtAccountBalance
+       fromAccount.accountBalance = fromAccountBalance
          toAccount.accountBalance = toAccountBalance
 
-      await fromtAccount.save()
+      await  fromAccount.save()
       await    toAccount.save()
 
       await movimientoDebito.save()
@@ -192,11 +209,11 @@ module.exports.doExchange = async (options) => {
   }
 
   await atomicTransferencia(options.tipoOperacion,
-                            fromtAccount, toAccount,
+                             fromAccount, toAccount,
                             Number.parseFloat(options.importe), 
                             Number.parseFloat(options.cotizacion))
 
-  console.log(`Operacion ${options.tipoOperacion}: from ${JSON.stringify(fromtAccount)} to  ${JSON.stringify(toAccount)}`);
+  console.log(`Operacion ${options.tipoOperacion}: from ${JSON.stringify( fromAccount)} to  ${JSON.stringify(toAccount)}`);
 
   return {
     status: 200,

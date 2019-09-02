@@ -257,6 +257,10 @@ module.exports.recoverPassword = async (options) => {
   }
 
   // TODO Sent Mail Engine
+  //      ... funciona, pero lo anulo para que no moleste con mails, y temas de seguridad ..
+
+  // enviarMailRecuperoContraseña(result);
+ 
 
   console.log(`OK recoverPassword(${username}) OK rta = ${JSON.stringify(result)}`);
 
@@ -268,30 +272,33 @@ module.exports.recoverPassword = async (options) => {
 
 
 
+enviarMailRecuperoContraseña = (result) => {
 
+  var emailMessage = `
+    - to: ${result.emailRecived} (ingresado)
+    - cc: ${result.emailRegister} (registrado en la BD)
+    
+    Estimado Sr/a ${result.username}:
+    <br>
+    Hemos recibido en nuestro sitio Tu! Open Bank una solicitud de
+    recuperación de constraseña para su usuario.
+    
+    Su clave de acceso es ${result.password}
+    
+    Por favor, no descuide sus constraseñas, la seguridad la construimos entre todos.
+    
+    Atentamente<br>
+    Tu! Open Bank.
+  `;
 
+  var options = {
+    service: 'gmail',
+    from: process.env.Techu_MAIL_SENDER_USER,
+      to: process.env.Techu_MAIL_SENDER_USER,
+    subject: 'Tu! Open Bank - Recupero de conrtaseña',
+    text: emailMessage
+  };
 
+  var MailSender = require('../core/MailSender').sendMail(options)
+}
 
-
-
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
-
-
-
-  // Following
-  // https://www.thepolyglotdeveloper.com/2019/02/building-rest-api-mongodb-mongoose-nodejs/
