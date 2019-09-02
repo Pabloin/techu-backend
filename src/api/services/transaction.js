@@ -2,6 +2,7 @@ const ServerError = require('../../lib/error')
 const Common = require('../core/Common')
 const CONST = require('../core/Const')
 const AccountModel = require('../core/db.models').AccountModel
+const TransactiontModel = require('../core/db.models').TransactiontModel
 const mongoose = require('mongoose').set('debug', true)
 
 /**
@@ -12,10 +13,11 @@ const mongoose = require('mongoose').set('debug', true)
  */
 module.exports.getTransactionList = async (options) => {
 
+  var fromtAccount = await TransactiontModel.find({ 'accountId' : options.accountId }, {}).exec();
 
   return {
     status: 200,
-    data: 'getTransactionList ok!'
+    data: fromtAccount
   };
 };
 
