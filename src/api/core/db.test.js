@@ -23,7 +23,7 @@ module.exports.testDatabaseModel = () => {
 
 module.exports.testMailSender = () => {
 
-  console.log('testMailSender()');
+  console.log('testr()');
 
   var options = {
     from: process.env.Techu_MAIL_SENDER_USER,
