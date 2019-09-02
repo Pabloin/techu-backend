@@ -128,10 +128,10 @@ module.exports.doExchange = async (options) => {
     } else {
       if (fromtAccount.accountCurrency === CONST.CUENTA_CURRENCY_ARS) {
           fromtAccountBalance -= importe;
-             toAccountBalance += importe * cotizacion;
+             toAccountBalance += importe / cotizacion;
       } else {
           fromtAccountBalance -= importe;
-             toAccountBalance += importe / cotizacion;
+             toAccountBalance += importe * cotizacion;
       }
     }
 
