@@ -2,35 +2,22 @@ const ServerError = require('../../lib/error')
 const Common = require('../core/Common')
 const CONST = require('../core/Const')
 const AccountModel = require('../core/db.models').AccountModel
+const TransactiontModel = require('../core/db.models').TransactiontModel
 const mongoose = require('mongoose').set('debug', true)
 
 /**
  * @param {Object} options
- * @param {Integer} options.userId UserId
+ * @param {Integer} options.accountId accountId
  * @throws {Error}
  * @return {Promise}
  */
-module.exports.getTransaction = async (options) => {
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
+module.exports.getTransactionList = async (options) => {
+
+  var fromtAccount = await TransactiontModel.find({ 'accountId' : options.accountId }, {}).exec();
 
   return {
     status: 200,
-    data: 'getTransaction ok!'
+    data: fromtAccount
   };
 };
 
