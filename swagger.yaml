@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Techu Open API Bank
-  description: Open API Bank
+  title: Tu! Open Bank API
+  description: Tu! Open Bank API
   version: '1.0.0'
 # Added by API Auto Mocking Plugin
 servers:
