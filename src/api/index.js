@@ -26,9 +26,9 @@ app.use('/swagger-editor', express.static(__dirname + '/../../swagger-editor'));
 // app.use('/', (req, res, next) => {
 //   res.redirect('/swagger-editor?url=/swagger.yaml');
 // });
-app.get('/', (req, res, next) => {
-  res.redirect('/swagger-editor?url=/swagger.yaml');
-});
+// app.get('/', (req, res, next) => {
+//   res.redirect('/swagger-editor?url=/swagger.yaml');
+// });
 
 
 /**
