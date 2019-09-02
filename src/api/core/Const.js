@@ -21,6 +21,8 @@ let Const = {
   CUENTA_CURRENCY_ARS: 'ARS',
   CUENTA_CURRENCY_USD: 'USD',
 
+  MOV_TIPO_HABERES: 'Acreditacion de Haberes'
+
 }
 
 
