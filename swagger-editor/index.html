@@ -51,6 +51,7 @@
   window.onload = function() {
     // Build a system
     const editor = SwaggerEditorBundle({
+      url: "/swagger.yaml",                // To Remove PetStore and add Open Bank Api
       dom_id: '#swagger-editor',
       layout: 'StandaloneLayout',
       presets: [
@@ -59,6 +60,7 @@
     })
 
     window.editor = editor
+
   }
   </script>
 
