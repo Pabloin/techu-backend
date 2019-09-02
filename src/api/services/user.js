@@ -93,12 +93,12 @@ module.exports.createUser = async (options) => {
     if (err) return handleError(err);
   })
 
-  // Crea los productos para el Usuario:
+
+  console.log(`STEP 2: Create Accounts for ${JSON.stringify(user)} `)
+
   AccountService.createProductsForUser(user, (err) => {
     if (err) return handleError(err);
   })
-
-  console.log(`STEP 2: Create Accounts ${JSON.stringify(user)} `)
 
   return {
     status: 201,

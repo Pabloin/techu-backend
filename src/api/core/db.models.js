@@ -17,12 +17,14 @@ var UserSchema = new Schema({
 
 var TransactionSchema = new Schema({
 
-  transactionId       : Number,
-  userId              : Number,
-  accountId           : Number,
-  transactionCurrency : String,
-  transactionBalance  : Number,
-  timestamp           : Date
+  transactionId           : Number,
+  userId                  : Number,
+  accountId               : Number,
+  transactionDate         : Date,
+  transactionCurrency     : String,
+  transactionDescription  : String,
+  transactionBalance      : Number,
+  timestamp               : Date
 
 });
 
@@ -52,7 +54,7 @@ var AccountSchema = new Schema({
 
 
 var UserModel         = mongoose.model('users',         UserSchema );
-var TransactiontModel = mongoose.model('transactionts', TransactionSchema );
+var TransactiontModel = mongoose.model('transactions',  TransactionSchema );
 var ProductModel      = mongoose.model('products',      ProductSchema );
 var AccountModel      = mongoose.model('accounts',      AccountSchema );
 
