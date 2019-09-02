@@ -199,7 +199,7 @@ paths:
       tags:
         - /transaction
       summary: Realiza una transferencia
-      description: Realiza una transferencia desde el origen al destino, por importe y tipo de cambio
+      description: Realiza una transferencia desde el origen al destino, por importe
       parameters:
         - name: fromAccountId
           in: path
@@ -219,9 +219,43 @@ paths:
           required: true
           schema:
             type: integer
+      responses:
+        '200':
+          description: retorna la info de la transaccion realizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  /transaction/exchange/{fromAccountId}:
+    post:
+      x-swagger-router-controller: Transaction
+      operationId: doExchange
+      tags:
+        - /transaction
+      summary: Realiza una Exchange entre ARS y USD
+      description: Realiza una Exchange desde el origen al destino, por importe y tipo de cambio
+      parameters:
+        - name: fromAccountId
+          in: path
+          description: cuenta origen
+          required: true
+          schema:
+            type: integer
+        - name: toAccountId
+          in: path
+          description: cuenta destino
+          required: true
+          schema:
+            type: integer
+        - name: importeEnUSD
+          in: path
+          description: importeEnUSD
+          required: true
+          schema:
+            type: integer
         - name: cotizacion
           in: path
-          description: cotizacion del tipo de cambio
+          description: cotizacion del tipo de cambio en USD
           required: true
           schema:
             type: integer

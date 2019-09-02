@@ -26,14 +26,13 @@ router.get('/:accountId', async (req, res, next) => {
 
 /**
  * Realiza una transferencia desde el origen al destino, por 
- * importe y tipo de cambio
+ * importe
  */
 router.post('/:fromAccountId', async (req, res, next) => {
   const options = {
     fromAccountId: req.params['fromAccountId'],
     toAccountId: req.body['toAccountId'],
-    importe: req.body['importe'],
-    cotizacion: req.body['cotizacion']
+    importe: req.body['importe']
   };
 
   try {
@@ -46,5 +45,30 @@ router.post('/:fromAccountId', async (req, res, next) => {
     });
   }
 });
+
+
+/**
+ *  Realiza una Exchange desde el origen al destino, por 
+ *  importe y tipo de cambio
+ */
+router.post('/exchange/:fromAccountId', async (req, res, next) => {
+  const options = {
+    fromAccountId: req.params['fromAccountId'],
+    toAccountId: req.body['toAccountId'],
+    importe: req.body['importeEnUSD'],
+    cotizacion: req.body['cotizacion']
+  };
+
+  try {
+    const result = await transaction.doExchange(options);
+    res.status(result.status || 200).send(result.data);
+  } catch (err) {
+    return res.status(500).send({
+      status: 500,
+      error: 'Server Error'
+    });
+  }
+});
+
 
 module.exports = router;
