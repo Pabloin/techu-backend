@@ -189,7 +189,7 @@ module.exports.createProductsForUser = async (user) => {
 
   var Account = new AccountModel();
 
-  Account.insertMany(arrProductos, (err, docs) => {
+  Account.collection.insert(arrProductos, (err, docs) => {
     if (err){
       return console.error(err);
     } else {
