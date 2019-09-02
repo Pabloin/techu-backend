@@ -5,15 +5,15 @@ info:
   version: '1.0.0'
 # Added by API Auto Mocking Plugin
 servers:
-  - url: 'http://localhost:3000'
-    variables: {}
-    description: Local Environment
-  - url: 'https://techu-backend-develop.herokuapp.com'
-    variables: {}
-    description: Development Environment
   - url: 'https://techu-backend.herokuapp.com'
     variables: {}
     description: Production Environment
+  - url: 'https://techu-backend-develop.herokuapp.com'
+    variables: {}
+    description: Development Environment
+  - url: 'http://localhost:3000'
+    variables: {}
+    description: Local Environment
 paths:
   /user:
     get:
