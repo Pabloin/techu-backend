@@ -18,6 +18,13 @@ app.use(cookieParser());
 
 
 /**
+ * Static content: Swagger API Doc
+ */
+app.use('/swagger-editor', express.static(__dirname + '/../../swagger-editor'));
+app.use('/swagger.yaml', express.static(__dirname + '/../../swagger.yaml'));
+app.use('/', express.static(__dirname + '/../../swagger-editor'));
+
+/**
  * Setup
  */
 const Common = require('./core/Common');

@@ -28,8 +28,7 @@
     "lodash": "^4.17.15",
     "mongoose": "^5.6.10",
     "node-yaml-config": "0.0.3",
-    "nodemailer": "^6.3.0",
-    "swagger-editor-dist": "^3.6.33"
+    "nodemailer": "^6.3.0"
   },
   "devDependencies": {
     "swagger-node-codegen": "^1.6.3"
