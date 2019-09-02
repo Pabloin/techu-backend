@@ -3,6 +3,7 @@ const Common = require('../core/Common')
 const CONST = require('../core/Const')
 const CORE_DB = require('../core/db.test')
 const AccountModel = require('../core/db.models').AccountModel
+const TransactiontModel = require('../core/db.models').TransactiontModel
 const UserModel = require('../core/db.models').UserModel
 
 /**
@@ -97,6 +98,11 @@ module.exports.getAccountByUsername = async (options) => {
   };
 };
 
+simulaImporteAcreditacioSueldoInical = () => {
+  // Sueldo Inicial: $ 10.000 +- 30%
+  return 10000 + Common.numeroAleatorio(-3000, 3000)
+}
+
 
 /**
  * @param {Object} user
@@ -116,7 +122,7 @@ module.exports.createProductsForUser = async (user) => {
   var tarjetaId_tj_visa_number   = "6104 0000 2222 " + tarjetaId_tj_visa;
   var tarjetaId_tj_master_number = "8802 0000 4321 " + tarjetaId_tj_master;
 
-  var saldoInicial = 10000 + Common.numeroAleatorio(-3000, 3000)   // 10.000 +- 30%
+  var sueldoSaldoInicial = simulaImporteAcreditacioSueldoInical()
 
   var account_ca = {
     userId             : user.userId,
@@ -126,7 +132,7 @@ module.exports.createProductsForUser = async (user) => {
     accountNumber      : accountId_ca,
     accountDV          : 1,
     accountCurrency    : CONST.CUENTA_CURRENCY_ARS,
-    accountBalance     : saldoInicial
+    accountBalance     : sueldoSaldoInicial
   };
 
   var account_cc = {
@@ -183,7 +189,6 @@ module.exports.createProductsForUser = async (user) => {
 
   var Account = new AccountModel();
 
-
   Account.collection.insert(arrProductos, (err, docs) => {
     if (err){
       return console.error(err);
@@ -192,12 +197,33 @@ module.exports.createProductsForUser = async (user) => {
     }
   })
 
+  var now = new Date();
+
+  var transaction = new TransactiontModel({
+    userId                  : user.userId,
+    accountId               : account_ca.accountId,
+    transactionDate         : now,
+    transactionCurrency     : CONST.CUENTA_CURRENCY_ARS,
+    transactionDescription  : CONST.MOV_TIPO_HABERES,
+    transactionBalance      : sueldoSaldoInicial,
+    timestamp               : now
+  });
+
+  transaction.save((err) => {
+    if (err) return handleError(err);
+  })
+
+
+  // Crear movimiento inicial de Acreditacion de Sueldo en la CA
+
+
   let message = `Productos creados el usuario (id=${user.userId}) ${user.username}:
     ${CONST.CUENTA_TYPE_CA_desc} ${account_ca.accountNumber},
     ${CONST.CUENTA_TYPE_CC_desc} ${account_cc.accountNumber},
     ${CONST.CUENTA_TYPE_CA_USD_desc} ${account_ca_usd.accountNumber},
     ${CONST.CUENTA_TYPE_TJ_VISA} ${tarjeta_tj_visa.accountNumber},
-    ${CONST.CUENTA_TYPE_TJ_MASTER} ${tarjeta_tj_master.accountNumber},
+    ${CONST.CUENTA_TYPE_TJ_MASTER} ${tarjeta_tj_master.accountNumber}, 
+    y se simula la acredicion de un haber de ARS ${sueldoSaldoInicial}
   `
 
   console.log("Message ", message);
