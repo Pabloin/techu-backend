@@ -21,21 +21,44 @@ module.exports.getTransactionList = async (options) => {
   };
 };
 
+
 /**
  * @param {Object} options
  * @param {Integer} options.fromAccountId cuenta origen
  * @param {Integer} options.toAccountId cuenta destino
  * @param {Integer} options.importe importe
- * @param {Integer} options.cotizacion cotizacion del tipo de cambio
  * @throws {Error}
  * @return {Promise}
  */
 module.exports.doTransferencia = async (options) => {
+  
+  console.log(`doTransferencia from ${JSON.stringify(options)}`);
 
+  options.cotizacion = 0
+  options.tipoOperacion = CONST.OP_TRANSFERENCIA;
+
+  return await this.doExchange(options)
+};
+
+
+/**
+ * @param {Object} options
+ * @param {Integer} options.fromAccountId cuenta origen
+ * @param {Integer} options.toAccountId cuenta destino
+ * @param {Integer} options.importeEnUSD importe En USD
+ * @param {Integer} options.cotizacion cotizacion del tipo de cambio en USD
+ * @throws {Error}
+ * @return {Promise}
+ */
+module.exports.doExchange = async (options) => {
+
+  if (options.tipoOperacion === undefined) {
+    options.tipoOperacion = CONST.OP_EXCHANGE
+  }
   var fromtAccount = await AccountModel.findOne({ 'accountId' : options.fromAccountId }, {}).exec();
   var    toAccount = await AccountModel.findOne({ 'accountId' : options.toAccountId }, {}).exec();
   
-  console.log(`doTransferencia from ${JSON.stringify(fromtAccount)} to  ${JSON.stringify(toAccount)}`);
+  console.log(`Operacion ${options.tipoOperacion}: from ${JSON.stringify(fromtAccount)} to  ${JSON.stringify(toAccount)}`);
 
   if (fromtAccount === null) {
     return {
@@ -51,6 +74,29 @@ module.exports.doTransferencia = async (options) => {
     };
   }
 
+  var mismaMoneda = (fromtAccount.accountCurrency === toAccount.accountCurrency);
+
+
+  console.log(`OPERACION: ${options.tipoOperacion}, Misma Moneda ${mismaMoneda}. `)
+  if (!mismaMoneda) {
+    if (options.tipoOperacion === CONST.OP_TRANSFERENCIA) {
+      return {
+        status: 400,
+        data: `No se pueden realizar transferencias sobre cuentas de distinto Moneda.`
+      };
+    } 
+  }
+
+  if (mismaMoneda) {
+    if (options.tipoOperacion === CONST.OP_EXCHANGE) {
+      return {
+        status: 400,
+        data: `No se pueden realizar un Exchange sobre cuentas de la misma Moneda.`
+      };
+    } 
+  }
+
+
   if (fromtAccount.accountType === CONST.CUENTA_TYPE_CA) {
     if (fromtAccount.accountCurrency === CONST.CUENTA_CURRENCY_ARS) {
       if (fromtAccount.accountBalance - options.importe < 0) {
@@ -60,7 +106,7 @@ module.exports.doTransferencia = async (options) => {
         };
       }
     } else {
-      if (fromtAccount.accountBalance - options.importe * cotizacion < 0) {
+      if (fromtAccount.accountBalance - options.importe < 0) {
         return {
           status: 400,
           data: `Saldo insuficiente en dolares`
@@ -69,7 +115,9 @@ module.exports.doTransferencia = async (options) => {
     }
   }
 
-  atomicTransferencia = async (fromtAccount, toAccount, importe, cotizacion) => {
+  atomicTransferencia = async (tipoOperacion, 
+                               fromtAccount, toAccount, 
+                               importe, cotizacion) => {
 
     let fromtAccountBalance = Number.parseFloat(fromtAccount.accountBalance)
     let    toAccountBalance = Number.parseFloat(   toAccount.accountBalance)
@@ -80,14 +128,14 @@ module.exports.doTransferencia = async (options) => {
     } else {
       if (fromtAccount.accountCurrency === CONST.CUENTA_CURRENCY_ARS) {
           fromtAccountBalance -= importe;
-             toAccountBalance += importe / cotizacion;
+             toAccountBalance += importe * cotizacion;
       } else {
           fromtAccountBalance -= importe;
-             toAccountBalance += importe * cotizacion;
+             toAccountBalance += importe / cotizacion;
       }
     }
 
-    console.log(`doTransferencia new: FROM ${fromtAccountBalance} TO ${toAccountBalance} `)
+    console.log(`Operacion ${tipoOperacion}: FROM ${fromtAccountBalance} TO ${toAccountBalance} `)
 
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -114,15 +162,16 @@ module.exports.doTransferencia = async (options) => {
     }
   }
 
-  await atomicTransferencia(fromtAccount, toAccount,
+  await atomicTransferencia(options.tipoOperacion,
+                            fromtAccount, toAccount,
                             Number.parseFloat(options.importe), 
                             Number.parseFloat(options.cotizacion))
 
-  console.log(`doTransferencia Ok from ${JSON.stringify(fromtAccount)} to  ${JSON.stringify(toAccount)}`);
+  console.log(`Operacion ${options.tipoOperacion}: from ${JSON.stringify(fromtAccount)} to  ${JSON.stringify(toAccount)}`);
 
   return {
     status: 200,
-    data: 'doTransferencia ok!'
+    data: `Operacion de ${options.tipoOperacion} OK`
   };
 };
 
