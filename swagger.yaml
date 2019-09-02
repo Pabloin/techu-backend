@@ -170,24 +170,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
-  /transaction/{userId}:
+  /transaction/{accountId}:
     get:
       x-swagger-router-controller: Transaction
       operationId: getTransactionList
       tags:
         - /transaction
-      summary: lista de transacciones de un usuario
-      description: Retorna la lista de transacciones de una usuario
+      summary: lista de transacciones de una cuenta
+      description: Retorna la lista de transacciones de una cuenta
       parameters:
-        - name: userId
+        - name: accountId
           in: path
-          description: UserId
+          description: accountId
           required: true
           schema:
             type: integer
       responses:
         '200':
-          description: retorna lista de transacciones de un usuario
+          description: retorna lista de transacciones de una cuenta
           content:
             application/json:
               schema:
