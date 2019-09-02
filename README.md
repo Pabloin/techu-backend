@@ -24,3 +24,13 @@ hostname
 - https://techu-backend-develop.herokuapp.com/
 
 
+# Query DB
+
+var username = 'gerardo'
+db.getCollection('users').find({"username" : username  })
+
+var userId = 6464
+db.getCollection('users').find({"userId" : userId  })
+db.getCollection('accounts').find({"userId" : userId  })
+db.getCollection('transactions').find({"userId" : userId  })
+

@@ -6,15 +6,15 @@ const router = new express.Router();
 
 
 /**
- * Retorna la lista de transacciones de una usuario
+ * Retorna la lista de transacciones de una cuenta
  */
-router.get('/:userId', async (req, res, next) => {
+router.get('/:accountId', async (req, res, next) => {
   const options = {
-    userId: req.params['userId']
+    accountId: req.params['accountId']
   };
 
   try {
-    const result = await transaction.getTransaction(options);
+    const result = await transaction.getTransactionList(options);
     res.status(result.status).send(Common.getResultData(result));
   } catch (err) {
     return res.status(500).send({
