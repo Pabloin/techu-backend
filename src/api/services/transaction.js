@@ -137,15 +137,44 @@ module.exports.doExchange = async (options) => {
 
     console.log(`Operacion ${tipoOperacion}: FROM ${fromtAccountBalance} TO ${toAccountBalance} `)
 
+    descTipoOp = (tipoOperacion) => (tipoOperacion == CONST.OP_TRANSFERENCIA) 
+                                  ? `Transferencia entre cuentas`
+                                  : `Compra Venta Dólares`
+
+    var now = new Date();
+    var movimientoDebito = new TransactiontModel({
+      userId                  : fromtAccount.userId,
+      accountId               : fromtAccount.accountId,
+      transactionDate         : now,
+      transactionCurrency     : fromtAccount.accountCurrency,
+      transactionDescription  : tipoOperacion,
+      transactionBalance      : importe * -1,
+      timestamp               : now
+    });
+
+    var movimientoCredito = new TransactiontModel({
+      userId                  : toAccount.userId,
+      accountId               : toAccount.accountId,
+      transactionDate         : now,
+      transactionCurrency     : toAccount.accountCurrency,
+      transactionDescription  : tipoOperacion,
+      transactionBalance      : importe,
+      timestamp               : now
+    });
+
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
 
       fromtAccount.accountBalance = fromtAccountBalance
-      toAccount.accountBalance = toAccountBalance
+         toAccount.accountBalance = toAccountBalance
+
       await fromtAccount.save()
       await    toAccount.save()
+
+      await movimientoDebito.save()
+      await movimientoCredito.save()
 
       await session.commitTransaction();
       session.endSession();
