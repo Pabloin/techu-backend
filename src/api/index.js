@@ -20,8 +20,8 @@ app.use(cookieParser());
 /**
  * Static content: Swagger API Doc in home: GET /
  */
-app.use('/swagger.yaml', express.static(__dirname + '/../../swagger.yaml'));
-app.use('/swagger-editor', express.static(__dirname + '/../../swagger-editor'));
+// app.use('/swagger.yaml', express.static(__dirname + '/../../swagger.yaml'));
+// app.use('/swagger-editor', express.static(__dirname + '/../../swagger-editor'));
 // app.use('/', express.static(__dirname + '/../../swagger-editor'));
 // app.use('/', (req, res, next) => {
 //   res.redirect('/swagger-editor?url=/swagger.yaml');
