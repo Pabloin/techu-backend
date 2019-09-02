@@ -321,6 +321,10 @@ components:
           type: integer
         accountId:
           type: integer
+        transactionDate:
+          type: string
+        transactionDescription:
+          type: string
         transactionCurrency:
           type: string
         transactionBalance:
