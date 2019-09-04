@@ -11,23 +11,6 @@ module.exports.getQuote = async (options) => {
 
   console.log(`getQuote(${options})`)
 
-  // Implement your business logic here...
-  //
-  // This function should return as follows:
-  //
-  // return {
-  //   status: 200, // Or another success code.
-  //   data: [] // Optional. You can put whatever you want here.
-  // };
-  //
-  // If an error happens during your business logic implementation,
-  // you should throw an error as follows:
-  //
-  // throw new ServerError({
-  //   status: 500, // Or another error code.
-  //   error: 'Server Error' // Or another error message.
-  // });
-
   var rand = Math.floor(Math.random() * Quotes.length);
 
   return {
@@ -35,4 +18,5 @@ module.exports.getQuote = async (options) => {
     data: Quotes[rand]
   };
 };
+
 
