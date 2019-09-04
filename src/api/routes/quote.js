@@ -1,8 +1,8 @@
 const express = require('express');
 const quote = require('../services/quote');
 const Common = require('../core/Common');
+const request = require('request');
 const router = new express.Router();
-
 
 /**
  * Retorna un mensaje random para el usuario
@@ -22,5 +22,52 @@ router.get('/:quoteId', async (req, res, next) => {
     });
   }
 });
+
+/**
+ * Cotizacion del dolar BCRA
+ * @param {Object} options    last // all
+ */
+router.get('/api-bcra/usd_uf/:select?', async (req, res, next) => {
+
+  const options = {
+    select: req.params['select']
+  };
+
+  var tokenBCRA = process.env.Techu_TOKEN_BCRA_API;
+  var reqOptions = {
+    url: 'https://api.estadisticasbcra.com/usd_of',
+    method: 'GET',
+    headers:{
+      "Authorization": `Bearer ${tokenBCRA}`
+    }
+  };
+
+  request(reqOptions, (err, response, body) => {
+    if (err) {
+      response.status(500).send({
+        status: 500,
+        error: erro
+      });
+     }
+
+    let arrRta = JSON.parse(body)
+
+    let dolarData = (options.select === 'last') ? arrRta[arrRta.length - 1] : arrRta
+
+    console.log(`/api-bcra/usd_uf (${JSON.stringify(options)}) dolarData=${dolarData}`)
+
+    let rta =  {
+      status: response.statusCode,
+      data: dolarData
+    };
+
+    res.status(response.statusCode).send(dolarData);
+
+  });
+
+  console.log(`/api-bcra/usd_uf (${JSON.stringify(options)})`)
+
+});
+
 
 module.exports = router;

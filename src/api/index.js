@@ -75,7 +75,9 @@ app.get('/user',        secureScopeToken.jwtCheck, secureScopeToken.requireScope
 app.use('/account',     secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
 app.use('/product',     secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
 app.use('/transaction', secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
-app.use('/quote',       secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
+
+
+// app.use('/quote',       secureScopeToken.jwtCheck, secureScopeToken.requireScope('full_access'));
 
 
 
