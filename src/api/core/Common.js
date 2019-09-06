@@ -2,6 +2,9 @@ const numeroAleatorio = (min, max) => Math.round(Math.random() * (max - min) + m
 
 const is_HTTP_OK = (httpCode) => httpCode >= 200 && httpCode < 300
 
+const getTokenApiBCRA_Config = () => {
+  return process.env.Techu_TOKEN_BCRA_API
+}
 
 const getResultData = (result) => {
 
@@ -54,6 +57,7 @@ const getMongoConfig = () => {
 }
 
 module.exports.numeroAleatorio = numeroAleatorio
+module.exports.getTokenApiBCRA_Config = getTokenApiBCRA_Config
 module.exports.getMailConfig = getMailConfig
 module.exports.getMongoConfig = getMongoConfig
 module.exports.getResultData = getResultData
