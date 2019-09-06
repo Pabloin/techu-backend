@@ -47,3 +47,5 @@ db.getCollection('accounts').find({"accountId" : 7662, "accountCurrency" : "ARS"
 db.getCollection('accounts').find({"accountId" : 6467, "accountCurrency" : "USD"}, proy1 )
 
 db.getCollection('accounts').find({"accountCurrency" : "USD", "accountType" : "CA"}, proy2)
+
+
