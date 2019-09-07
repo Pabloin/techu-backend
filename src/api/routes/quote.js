@@ -55,8 +55,8 @@ router.get('/api-bcra/usd_uf/:select?', async (req, res, next) => {
        }
 
        if (response.statusCode === 403) {
-         // Límite de 100 invocaciones x día del BCRA
-         throw Error(`Code 403: Error: ${body}`)
+         res.status(response.statusCode).send(`Code 403: Error Límite de 100 invocaciones x día del BCRA`);
+         return;
        }
 
        arrRta = JSON.parse(body)
