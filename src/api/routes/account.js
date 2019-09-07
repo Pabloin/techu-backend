@@ -13,7 +13,7 @@ router.get('/:accountId', async (req, res, next) => {
 
   try {
     const result = await account.getAccount(options);
-    res.status(result.status).send(Common.getResultData(result));
+    res.status(result.status).send(Common.getJsonResponse(result));
   } catch (err) {
     return res.status(500).send({
       status: 500,
@@ -35,7 +35,8 @@ router.get('/user/:username', async (req, res, next) => {
 
   try {
     const result = await account.getAccountByUsername(options);
-    res.status(result.status || 200).send(result.data);
+    // res.status(result.status || 200).send(result.data);
+    res.status(result.status).send(Common.getTextResponse(result));
   } catch (err) {
     return res.status(500).send({
       status: 500,

@@ -14,7 +14,7 @@ router.get('/:productId', async (req, res, next) => {
 
   try {
     const result = await product.getProducts(options);
-    res.status(result.status).send(Common.getResultData(result));
+    res.status(result.status).send(Common.getJsonResponse(result));
   } catch (err) {
     return res.status(500).send({
       status: 500,
