@@ -1,6 +1,7 @@
 const ServerError = require('../../lib/error')
 const Common = require('../core/Common')
-const CONST = require('../core/Const')
+const CONST = require('../core/Const').Const
+const Code = require('../core/Const').Code
 const AccountModel = require('../core/db.models').AccountModel
 const TransactiontModel = require('../core/db.models').TransactiontModel
 const mongoose = require('mongoose').set('debug', true)
@@ -16,7 +17,7 @@ module.exports.getTransactionList = async (options) => {
   var  fromAccount = await TransactiontModel.find({ 'accountId' : options.accountId }, {}).exec();
 
   return {
-    status: 200,
+    status: Code.HTTP_200_OK,
     data:  fromAccount
   };
 };
@@ -60,28 +61,29 @@ module.exports.doExchange = async (options) => {
   
   console.log(`Operacion ${options.tipoOperacion}: from ${JSON.stringify( fromAccount)} to  ${JSON.stringify(toAccount)}`);
 
-  if ( fromAccount === null) {
+  if (fromAccount === null) {
     return {
-      status: 404,
+      status: Code.HTTP_404_NOT_FOUND,
       error: `Cuenta origen ${options.fromAccountId} inexistente`
     };
   }
   
   if (toAccount === null) {
     return {
-      status: 404,
+      status: Code.HTTP_404_NOT_FOUND,
       error: `Cuenta destino ${options.toAccountId} inexistente`
     };
   }
 
-  var mismaMoneda = ( fromAccount.accountCurrency === toAccount.accountCurrency);
-
+  var monedaCuentaDebito = (fromAccount.accountCurrency === CONST.CUENTA_CURRENCY_ARS) ? 'Pesos' : 'Dolar'
+  var mismaMoneda        = (fromAccount.accountCurrency === toAccount.accountCurrency);
+  
 
   console.log(`OPERACION: ${options.tipoOperacion}, Misma Moneda ${mismaMoneda}. `)
   if (!mismaMoneda) {
     if (options.tipoOperacion === CONST.OP_TRANSFERENCIA) {
       return {
-        status: 400,
+        status: Code.HTTP_400_BAD_REQUEST,
         error: `No se pueden realizar transferencias sobre cuentas de distinto Moneda.`
       };
     } 
@@ -90,26 +92,38 @@ module.exports.doExchange = async (options) => {
   if (mismaMoneda) {
     if (options.tipoOperacion === CONST.OP_EXCHANGE) {
       return {
-        status: 400,
+        status: Code.HTTP_400_BAD_REQUEST,
         error: `No se pueden realizar un Exchange sobre cuentas de la misma Moneda.`
       };
     } 
   }
 
 
-  if ( fromAccount.accountType === CONST.CUENTA_TYPE_CA) {
-    if ( fromAccount.accountCurrency === CONST.CUENTA_CURRENCY_ARS) {
-      if ( fromAccount.accountBalance - options.importe < 0) {
+  if (options.tipoOperacion === CONST.OP_TRANSFERENCIA) {
+    if ( fromAccount.accountBalance - options.importe < 0) {
+      return {
+        status: Code.HTTP_400_BAD_REQUEST,
+        error: `Saldo insuficiente en ${monedaCuentaDebito}`
+      };
+    }
+  }
+
+  if (options.tipoOperacion === CONST.OP_EXCHANGE) {
+
+    isDolarCompra = (currencyOrigen) => currencyOrigen === CONST.CUENTA_CURRENCY_ARS
+
+    if (isDolarCompra(fromAccount.accountCurrency)) {
+      if ( fromAccount.accountBalance - options.importe * options.cotizacion < 0) {
         return {
-          status: 400,
-          error: `Saldo insuficiente en pesos`
+          status: Code.HTTP_400_BAD_REQUEST,
+          error: `Saldo insuficiente en ${monedaCuentaDebito} para comprar ${options.importe} Dólares `
         };
       }
     } else {
       if ( fromAccount.accountBalance - options.importe < 0) {
         return {
-          status: 400,
-          error: `Saldo insuficiente en dolares`
+          status: Code.HTTP_400_BAD_REQUEST,
+          error: `Saldo insuficiente en ${monedaCuentaDebito} para vender ${options.importe} Dólares `
         };
       }
     }
@@ -202,8 +216,8 @@ module.exports.doExchange = async (options) => {
       session.endSession();
 
       return {
-        status: 500,
-        data: `No se pudo procesar la transferencia atomicamente.`
+        status: Code.HTTP_500_SERVER_ERROR,
+        error: `No se pudo procesar la transferencia atomicamente.`
       };
     }
   }
@@ -216,7 +230,7 @@ module.exports.doExchange = async (options) => {
   console.log(`Operacion ${options.tipoOperacion}: from ${JSON.stringify( fromAccount)} to  ${JSON.stringify(toAccount)}`);
 
   return {
-    status: 200,
+    status: Code.HTTP_200_OK,
     data: `Operacion de ${options.tipoOperacion} OK`
   };
 };
