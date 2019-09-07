@@ -109,11 +109,21 @@ module.exports.doExchange = async (options) => {
   }
 
   if (options.tipoOperacion === CONST.OP_EXCHANGE) {
-    if (fromAccount.accountCurrency === CONST.CUENTA_CURRENCY_ARS) {
+
+    isDolarCompra = (currencyOrigen) => currencyOrigen === CONST.CUENTA_CURRENCY_ARS
+
+    if (isDolarCompra(fromAccount.accountCurrency)) {
       if ( fromAccount.accountBalance - options.importe * options.cotizacion < 0) {
         return {
           status: Code.HTTP_400_BAD_REQUEST,
           error: `Saldo insuficiente en ${monedaCuentaDebito} para comprar ${options.importe} Dólares `
+        };
+      }
+    } else {
+      if ( fromAccount.accountBalance - options.importe < 0) {
+        return {
+          status: Code.HTTP_400_BAD_REQUEST,
+          error: `Saldo insuficiente en ${monedaCuentaDebito} para vender ${options.importe} Dólares `
         };
       }
     }
