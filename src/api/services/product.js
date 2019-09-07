@@ -1,4 +1,6 @@
 const ServerError = require('../../lib/error');
+const Code = require('../core/Const').Code
+
 /**
  * @param {Object} options
  * @param {Integer} options.productId Id del producto
@@ -24,7 +26,7 @@ module.exports.getProducts = async (options) => {
   // });
 
   return {
-    status: 200,
+    status: Code.HTTP_200_OK,
     data: 'getProducts ok!'
   };
 };

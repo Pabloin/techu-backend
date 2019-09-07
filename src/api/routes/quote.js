@@ -15,9 +15,9 @@ router.get('/:quoteId', async (req, res, next) => {
 
   try {
     const result = await quote.getQuote(options);
-    res.status(result.status).send(Common.getJsonResponse(result));
+    res.status(result.status).send(result);
   } catch (err) {
-    return res.status(500).send({
+    return res.status(Code.HTTP_500_SERVER_ERROR).send({
       status: Code.HTTP_500_SERVER_ERROR,
       error: 'Server Error'
     });
@@ -54,9 +54,9 @@ router.get('/api-bcra/usd_uf/:select?', async (req, res, next) => {
   
     request(reqOptions, (err, response, body) => {
       if (err) {
-        response.status(500).send({
+        response.status(Code.HTTP_500_SERVER_ERROR).send({
           status: Code.HTTP_500_SERVER_ERROR,
-          error: erro
+          error: err
         });
        }
 
@@ -67,7 +67,7 @@ router.get('/api-bcra/usd_uf/:select?', async (req, res, next) => {
      
        let rta = getRtaBCRA(options, arrRta);
 
-       res.status(response.statusCode).send(dolarData);
+       res.status(Code.HTTP_200_OK).send(rta);
      
        console.log(`/api-bcra/usd_uf (${JSON.stringify(options)})`)
 
@@ -78,7 +78,7 @@ router.get('/api-bcra/usd_uf/:select?', async (req, res, next) => {
 
     let rta = getRtaBCRA_Mock(options);
   
-    res.status(response.statusCode).send(dolarData);
+    res.status(Code.HTTP_200_OK).send(rta);
   
     console.log(`/api-bcra/usd_uf (${JSON.stringify(options)})`)
   }
@@ -109,7 +109,7 @@ getRtaBCRA = (options, arrRta) => {
   console.log(`/api-bcra/usd_uf (${JSON.stringify(options)}) dolarData=${dolarData}`)
 
   let rta =  {
-    status: 200,
+    status: Code.HTTP_200_OK,
     data: dolarData
   };
 

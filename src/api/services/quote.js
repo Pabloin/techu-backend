@@ -1,6 +1,6 @@
 const ServerError = require('../../lib/error');
 const Quotes = require('../core/Quotes.json');
-
+const Code = require('../core/Const').Code
 /**
  * @param {Object} options
  * @param {Integer} options.quoteId QuoteId
@@ -14,7 +14,7 @@ module.exports.getQuote = async (options) => {
   var rand = Math.floor(Math.random() * Quotes.length);
 
   return {
-    status: 200,
+    status: Code.HTTP_200_OK,
     data: Quotes[rand]
   };
 };

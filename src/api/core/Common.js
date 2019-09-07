@@ -6,35 +6,6 @@ const getTokenApiBCRA_Config = () => {
   return process.env.Techu_TOKEN_BCRA_API
 }
 
-const getJsonResponse = (result) => {
-
-  if (is_HTTP_OK(result.status || 200)) {
-      return {
-        status: result.status,
-          data: result.data
-      }
-  }
-
-  return {
-    status: result.status,
-     error: result.data
-  }
-}
-
-const getTextResponse = (result) => {
-
-  if (is_HTTP_OK(result.status || 200)) {
-    return result.data
-  }
-
-  if (result.error === undefined) {
-    return result.data
-  }
-  
-  return result.error
-}
-
-
 const getMailConfig = () => {
 
   console.log(`getMailConfig() `)
@@ -74,6 +45,5 @@ module.exports.numeroAleatorio = numeroAleatorio
 module.exports.getTokenApiBCRA_Config = getTokenApiBCRA_Config
 module.exports.getMailConfig = getMailConfig
 module.exports.getMongoConfig = getMongoConfig
-module.exports.getJsonResponse = getJsonResponse
-module.exports.getTextResponse = getTextResponse
+module.exports.is_HTTP_OK = is_HTTP_OK
 

@@ -31,6 +31,7 @@ let Const = {
 
 let Code = {
   HTTP_200_OK:               200,
+  HTTP_201_CREATED_OK:       201,
   HTTP_400_BAD_REQUEST:      400,
   HTTP_404_NOT_FOUND:        404,
   HTTP_500_SERVER_ERROR:     500,

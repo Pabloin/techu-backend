@@ -230,7 +230,7 @@ module.exports.createProductsForUser = async (user) => {
   console.log("Message ", message);
 
   return {
-    status: 201,
+    status: Code.HTTP_201_CREATED_OK,
     data: {
       message: message,
       productos: arrProductos

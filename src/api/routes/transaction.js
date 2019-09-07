@@ -14,7 +14,7 @@ router.get('/:accountId', async (req, res, next) => {
 
   try {
     const result = await transaction.getTransactionList(options);
-    res.status(result.status).send(Common.getJsonResponse(result));
+    res.status(200).send(result);
   } catch (err) {
     return res.status(Code.HTTP_500_SERVER_ERROR).send({
       status: Code.HTTP_500_SERVER_ERROR,
@@ -36,8 +36,7 @@ router.post('/:fromAccountId', async (req, res, next) => {
 
   try {
     const result = await transaction.doTransferencia(options);
-    // res.status(result.status || 200).send(result.data);
-    res.status(result.status).send(Common.getTextResponse(result));
+    res.status(200).send(result);
   } catch (err) {
     return res.status(Code.HTTP_500_SERVER_ERROR).send({
       status: Code.HTTP_500_SERVER_ERROR,
@@ -61,8 +60,7 @@ router.post('/exchange/:fromAccountId', async (req, res, next) => {
 
   try {
     const result = await transaction.doExchange(options);
-    // res.status(result.status || 200).send(result.data);
-    res.status(result.status).send(Common.getTextResponse(result));
+    res.status(200).send(result);
   } catch (err) {
     return res.status(Code.HTTP_500_SERVER_ERROR).send({
       status: Code.HTTP_500_SERVER_ERROR,

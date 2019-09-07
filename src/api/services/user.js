@@ -102,7 +102,7 @@ module.exports.createUser = async (options) => {
   })
 
   return {
-    status: 201,
+    status: Code.HTTP_201_CREATED_OK,
     data: {
           id_token : id_token,
       access_token : access_token
@@ -165,7 +165,7 @@ module.exports.loginUser = async (options) => {
     console.log(`OK loginUser(${username}) OK rta = ${JSON.stringify(result)}`);
 
     return {
-      status: 201,
+      status: Code.HTTP_201_CREATED_OK,
       data: {
             id_token : id_token,
         access_token : access_token

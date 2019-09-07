@@ -14,9 +14,9 @@ router.get('/:accountId', async (req, res, next) => {
 
   try {
     const result = await account.getAccount(options);
-    res.status(result.status).send(Common.getJsonResponse(result));
+    res.status(200).send(result);
   } catch (err) {
-    return res.status(500).send({
+    return res.status(Code.HTTP_500_SERVER_ERROR).send({
       status: Code.HTTP_500_SERVER_ERROR,
       error: 'Server Error'
     });
@@ -36,10 +36,9 @@ router.get('/user/:username', async (req, res, next) => {
 
   try {
     const result = await account.getAccountByUsername(options);
-    // res.status(result.status || 200).send(result.data);
-    res.status(result.status).send(Common.getTextResponse(result));
+    res.status(200).send(result);
   } catch (err) {
-    return res.status(500).send({
+    return res.status(Code.HTTP_500_SERVER_ERROR).send({
       status: Code.HTTP_500_SERVER_ERROR,
       error: 'Server Error'
     });
