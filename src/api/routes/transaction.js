@@ -15,7 +15,7 @@ router.get('/:accountId', async (req, res, next) => {
 
   try {
     const result = await transaction.getTransactionList(options);
-    res.status(result.status).send(Common.getResultData(result));
+    res.status(result.status).send(Common.getJsonResponse(result));
   } catch (err) {
     return res.status(500).send({
       status: 500,
@@ -37,7 +37,8 @@ router.post('/:fromAccountId', async (req, res, next) => {
 
   try {
     const result = await transaction.doTransferencia(options);
-    res.status(result.status || 200).send(result.data);
+    // res.status(result.status || 200).send(result.data);
+    res.status(result.status).send(Common.getTextResponse(result));
   } catch (err) {
     return res.status(500).send({
       status: 500,
@@ -61,7 +62,8 @@ router.post('/exchange/:fromAccountId', async (req, res, next) => {
 
   try {
     const result = await transaction.doExchange(options);
-    res.status(result.status || 200).send(result.data);
+    // res.status(result.status || 200).send(result.data);
+    res.status(result.status).send(Common.getTextResponse(result));
   } catch (err) {
     return res.status(500).send({
       status: 500,
