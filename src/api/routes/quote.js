@@ -55,7 +55,7 @@ router.get('/api-bcra/usd_uf/:select?', async (req, res, next) => {
        }
 
        if (response.statusCode === 403) {
-         throw Error(`Code: ${e} Error: ${body}`)
+         throw Error(`Code 403: Error: ${body}`)
        }
 
        arrRta = JSON.parse(body)
