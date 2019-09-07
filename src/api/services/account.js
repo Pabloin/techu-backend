@@ -57,7 +57,7 @@ module.exports.getAccountByUsername = async (options) => {
   if (!username) {
     return {
       status: 400,
-      data: `User "username" no pueden ser nulo`
+      error: `User "username" no pueden ser nulo`
     };
   }
 
@@ -71,7 +71,7 @@ module.exports.getAccountByUsername = async (options) => {
   if (userList.length === 0) {
     return {
       status: 404,
-      data: `User "${username}" not found.`
+      error: `User "${username}" not found.`
     };
   }
 
@@ -88,7 +88,7 @@ module.exports.getAccountByUsername = async (options) => {
   if (accountList.length === 0) {
     return {
       status: 404,
-      data: `Productos para "${user.userId}" not found.`
+      error: `Productos para "${user.userId}" not found.`
     };
   }
 

@@ -41,7 +41,7 @@ module.exports.createUser = async (options) => {
   if (!username || !password) {
       return {
         status: 400,
-        data: `User credentials "username, password" no pueden ser nulas.`
+        error: `User credentials "username, password" no pueden ser nulas.`
       };
   }
 
@@ -56,7 +56,7 @@ module.exports.createUser = async (options) => {
   if (userList.length > 0) {
       return {
         status: 400,
-        data: `User "${username}" already exist.`
+        error: `User "${username}" already exist.`
       };
   }
 
@@ -127,7 +127,7 @@ module.exports.loginUser = async (options) => {
   if (!username || !password) {
     return {
       status: 400,
-      data: `User credentials "username, password" no pueden ser nulas.`
+      error: `User credentials "username, password" no pueden ser nulas.`
     };
   }
 
@@ -142,7 +142,7 @@ module.exports.loginUser = async (options) => {
   if (userList.length === 0) {
     return {
       status: 404,
-      data: `User "${username}" not found.`
+      error: `User "${username}" not found.`
     };
   }
 
@@ -179,7 +179,7 @@ module.exports.loginUser = async (options) => {
 
   return {
     status: 400,
-    data: `User "${username}" not Authorzed. Login Incorrect.`
+    error: `User "${username}" not Authorzed. Login Incorrect.`
   };
 };
 
@@ -201,7 +201,7 @@ module.exports.logoutUser = async (options) => {
   if (userList.length === 0) {
     return {
       status: 404,
-      data: `User "${username}" not found.`
+      error: `User "${username}" not found.`
     };
   }
 
@@ -243,7 +243,7 @@ module.exports.recoverPassword = async (options) => {
   if (userList.length === 0) {
     return {
       status: 404,
-      data: `User "${username}" not found.`
+      error: `User "${username}" not found.`
     };
   }
 

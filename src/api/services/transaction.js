@@ -63,14 +63,14 @@ module.exports.doExchange = async (options) => {
   if ( fromAccount === null) {
     return {
       status: 404,
-      data: `Cuenta origen ${options.fromAccountId} inexistente`
+      error: `Cuenta origen ${options.fromAccountId} inexistente`
     };
   }
   
   if (toAccount === null) {
     return {
       status: 404,
-      data: `Cuenta destino ${options.toAccountId} inexistente`
+      error: `Cuenta destino ${options.toAccountId} inexistente`
     };
   }
 
@@ -82,7 +82,7 @@ module.exports.doExchange = async (options) => {
     if (options.tipoOperacion === CONST.OP_TRANSFERENCIA) {
       return {
         status: 400,
-        data: `No se pueden realizar transferencias sobre cuentas de distinto Moneda.`
+        error: `No se pueden realizar transferencias sobre cuentas de distinto Moneda.`
       };
     } 
   }
@@ -91,7 +91,7 @@ module.exports.doExchange = async (options) => {
     if (options.tipoOperacion === CONST.OP_EXCHANGE) {
       return {
         status: 400,
-        data: `No se pueden realizar un Exchange sobre cuentas de la misma Moneda.`
+        error: `No se pueden realizar un Exchange sobre cuentas de la misma Moneda.`
       };
     } 
   }
@@ -102,14 +102,14 @@ module.exports.doExchange = async (options) => {
       if ( fromAccount.accountBalance - options.importe < 0) {
         return {
           status: 400,
-          data: `Saldo insuficiente en pesos`
+          error: `Saldo insuficiente en pesos`
         };
       }
     } else {
       if ( fromAccount.accountBalance - options.importe < 0) {
         return {
           status: 400,
-          data: `Saldo insuficiente en dolares`
+          error: `Saldo insuficiente en dolares`
         };
       }
     }
