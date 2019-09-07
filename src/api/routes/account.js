@@ -1,6 +1,7 @@
 const express = require('express');
 const account = require('../services/account');
 const Common = require('../core/Common');
+const Code = require('../core/Const').Code
 const router = new express.Router();
 
 /**
@@ -16,7 +17,7 @@ router.get('/:accountId', async (req, res, next) => {
     res.status(result.status).send(Common.getJsonResponse(result));
   } catch (err) {
     return res.status(500).send({
-      status: 500,
+      status: Code.HTTP_500_SERVER_ERROR,
       error: 'Server Error'
     });
   }
@@ -39,7 +40,7 @@ router.get('/user/:username', async (req, res, next) => {
     res.status(result.status).send(Common.getTextResponse(result));
   } catch (err) {
     return res.status(500).send({
-      status: 500,
+      status: Code.HTTP_500_SERVER_ERROR,
       error: 'Server Error'
     });
   }

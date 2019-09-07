@@ -25,10 +25,17 @@ let Const = {
 
   OP_TRANSFERENCIA: 'TRANSFERENCIA',
   OP_EXCHANGE:      'EXCHANGE',
+
 }
 
 
+let Code = {
+  HTTP_200_OK:               200,
+  HTTP_400_BAD_REQUEST:      400,
+  HTTP_404_NOT_FOUND:        404,
+  HTTP_500_SERVER_ERROR:     500,
+}
 
-
-module.exports = Object.freeze(Const);
+module.exports.Const = Object.freeze(Const);
+module.exports.Code  = Object.freeze(Code);
 

@@ -1,6 +1,7 @@
 const ServerError = require('../../lib/error')
 const Common = require('../core/Common')
-const CONST = require('../core/Const')
+const CONST = require('../core/Const').Const
+const Code = require('../core/Const').Code
 const AccountModel = require('../core/db.models').AccountModel
 const TransactiontModel = require('../core/db.models').TransactiontModel
 const mongoose = require('mongoose').set('debug', true)
@@ -16,7 +17,7 @@ module.exports.getTransactionList = async (options) => {
   var  fromAccount = await TransactiontModel.find({ 'accountId' : options.accountId }, {}).exec();
 
   return {
-    status: 200,
+    status: Code.HTTP_200_OK,
     data:  fromAccount
   };
 };
@@ -202,7 +203,7 @@ module.exports.doExchange = async (options) => {
       session.endSession();
 
       return {
-        status: 500,
+        status: Code.HTTP_500_SERVER_ERROR,
         data: `No se pudo procesar la transferencia atomicamente.`
       };
     }
@@ -216,7 +217,7 @@ module.exports.doExchange = async (options) => {
   console.log(`Operacion ${options.tipoOperacion}: from ${JSON.stringify( fromAccount)} to  ${JSON.stringify(toAccount)}`);
 
   return {
-    status: 200,
+    status: Code.HTTP_200_OK,
     data: `Operacion de ${options.tipoOperacion} OK`
   };
 };

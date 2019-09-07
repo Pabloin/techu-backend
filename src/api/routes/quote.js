@@ -2,6 +2,7 @@ const express = require('express');
 const quote = require('../services/quote');
 const Common = require('../core/Common');
 const request = require('request');
+const Code = require('../core/Const').Code
 const router = new express.Router();
 
 /**
@@ -17,7 +18,7 @@ router.get('/:quoteId', async (req, res, next) => {
     res.status(result.status).send(Common.getJsonResponse(result));
   } catch (err) {
     return res.status(500).send({
-      status: 500,
+      status: Code.HTTP_500_SERVER_ERROR,
       error: 'Server Error'
     });
   }
@@ -54,7 +55,7 @@ router.get('/api-bcra/usd_uf/:select?', async (req, res, next) => {
     request(reqOptions, (err, response, body) => {
       if (err) {
         response.status(500).send({
-          status: 500,
+          status: Code.HTTP_500_SERVER_ERROR,
           error: erro
         });
        }
