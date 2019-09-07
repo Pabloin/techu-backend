@@ -1,6 +1,7 @@
 const express = require('express');
 const product = require('../services/product');
 const Common = require('../core/Common');
+const Code = require('../core/Const').Code
 const router = new express.Router();
 
 
@@ -14,10 +15,10 @@ router.get('/:productId', async (req, res, next) => {
 
   try {
     const result = await product.getProducts(options);
-    res.status(result.status).send(Common.getResultData(result));
+    res.status(200).send(result);
   } catch (err) {
-    return res.status(500).send({
-      status: 500,
+    return res.status(Code.HTTP_500_SERVER_ERROR).send({
+      status: Code.HTTP_500_SERVER_ERROR,
       error: 'Server Error'
     });
   }

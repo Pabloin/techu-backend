@@ -1,6 +1,7 @@
 const ServerError = require('../../lib/error')
 const Common = require('../core/Common')
-const CONST = require('../core/Const')
+const CONST = require('../core/Const').Const
+const Code = require('../core/Const').Code
 const CORE_DB = require('../core/db.test')
 const AccountModel = require('../core/db.models').AccountModel
 const TransactiontModel = require('../core/db.models').TransactiontModel
@@ -36,7 +37,7 @@ module.exports.getAccount = async (options) => {
   CORE_DB.testDatabaseModel()
 
   return {
-    status: 200,
+    status: Code.HTTP_200_OK,
     data: 'getAccount v2 ok!'
   };
 };
@@ -56,8 +57,8 @@ module.exports.getAccountByUsername = async (options) => {
   // Paso 1: Usuario es obligatorio
   if (!username) {
     return {
-      status: 400,
-      data: `User "username" no pueden ser nulo`
+      status: Code.HTTP_400_BAD_REQUEST,
+      error: `User "username" no pueden ser nulo`
     };
   }
 
@@ -70,8 +71,8 @@ module.exports.getAccountByUsername = async (options) => {
 
   if (userList.length === 0) {
     return {
-      status: 404,
-      data: `User "${username}" not found.`
+      status: Code.HTTP_404_NOT_FOUND,
+      error: `User "${username}" not found.`
     };
   }
 
@@ -87,13 +88,13 @@ module.exports.getAccountByUsername = async (options) => {
 
   if (accountList.length === 0) {
     return {
-      status: 404,
-      data: `Productos para "${user.userId}" not found.`
+      status: Code.HTTP_404_NOT_FOUND,
+      error: `Productos para "${user.userId}" not found.`
     };
   }
 
   return {
-    status: 200,
+    status: Code.HTTP_200_OK,
     data: accountList
   };
 };
@@ -229,7 +230,7 @@ module.exports.createProductsForUser = async (user) => {
   console.log("Message ", message);
 
   return {
-    status: 201,
+    status: Code.HTTP_201_CREATED_OK,
     data: {
       message: message,
       productos: arrProductos

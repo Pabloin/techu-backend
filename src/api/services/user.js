@@ -1,5 +1,6 @@
 const ServerError = require('../../lib/error');
 const Common = require('../core/Common')
+const Code = require('../core/Const').Code
 const AccountService = require('../services/account')
 const secureUserToken = require('../security/validate-user-token')
 const UserModel = require('../core/db.models').UserModel
@@ -21,7 +22,7 @@ module.exports.getUsersList = async (options) => {
   }
 
   return {
-    status: 200,
+    status: Code.HTTP_200_OK,
     data: userList
   };
 };
@@ -41,7 +42,7 @@ module.exports.createUser = async (options) => {
   if (!username || !password) {
       return {
         status: 400,
-        data: `User credentials "username, password" no pueden ser nulas.`
+        error: `User credentials "username, password" no pueden ser nulas.`
       };
   }
 
@@ -56,7 +57,7 @@ module.exports.createUser = async (options) => {
   if (userList.length > 0) {
       return {
         status: 400,
-        data: `User "${username}" already exist.`
+        error: `User "${username}" already exist.`
       };
   }
 
@@ -101,7 +102,7 @@ module.exports.createUser = async (options) => {
   })
 
   return {
-    status: 201,
+    status: Code.HTTP_201_CREATED_OK,
     data: {
           id_token : id_token,
       access_token : access_token
@@ -127,7 +128,7 @@ module.exports.loginUser = async (options) => {
   if (!username || !password) {
     return {
       status: 400,
-      data: `User credentials "username, password" no pueden ser nulas.`
+      error: `User credentials "username, password" no pueden ser nulas.`
     };
   }
 
@@ -142,7 +143,7 @@ module.exports.loginUser = async (options) => {
   if (userList.length === 0) {
     return {
       status: 404,
-      data: `User "${username}" not found.`
+      error: `User "${username}" not found.`
     };
   }
 
@@ -164,7 +165,7 @@ module.exports.loginUser = async (options) => {
     console.log(`OK loginUser(${username}) OK rta = ${JSON.stringify(result)}`);
 
     return {
-      status: 201,
+      status: Code.HTTP_201_CREATED_OK,
       data: {
             id_token : id_token,
         access_token : access_token
@@ -172,14 +173,14 @@ module.exports.loginUser = async (options) => {
     };
 
     // return {
-    //   status: 200,
+    //   status: Code.HTTP_200_OK,
     //   data: `User "${username}" Authorzed. Login OK.`
     // };
   }
 
   return {
     status: 400,
-    data: `User "${username}" not Authorzed. Login Incorrect.`
+    error: `User "${username}" not Authorzed. Login Incorrect.`
   };
 };
 
@@ -201,7 +202,7 @@ module.exports.logoutUser = async (options) => {
   if (userList.length === 0) {
     return {
       status: 404,
-      data: `User "${username}" not found.`
+      error: `User "${username}" not found.`
     };
   }
 
@@ -214,7 +215,7 @@ module.exports.logoutUser = async (options) => {
   console.log(`OK loginUser(${username}) OK rta = ${JSON.stringify(result)}`);
 
   return {
-    status: 200,
+    status: Code.HTTP_200_OK,
     data: 'logoutUser ok!'
   };
 };
@@ -243,7 +244,7 @@ module.exports.recoverPassword = async (options) => {
   if (userList.length === 0) {
     return {
       status: 404,
-      data: `User "${username}" not found.`
+      error: `User "${username}" not found.`
     };
   }
 
@@ -265,7 +266,7 @@ module.exports.recoverPassword = async (options) => {
   console.log(`OK recoverPassword(${username}) OK rta = ${JSON.stringify(result)}`);
 
   return {
-    status: 200,
+    status: Code.HTTP_200_OK,
     data: result
   };
 };

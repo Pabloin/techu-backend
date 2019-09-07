@@ -1,7 +1,7 @@
 const express = require('express');
 const user = require('../services/user');
 const Common = require('../core/Common');
-
+const Code = require('../core/Const').Code
 const router = new express.Router();
 
 /**
@@ -17,10 +17,10 @@ router.get('/', async (req, res, next) => {
 
   try {
     const result = await user.getUsersList(options);
-    res.status(200).send(result.data);
+    res.status(200).send(result);
   } catch (err) {
-    return res.status(500).send({
-      status: 500,
+    return res.status(Code.HTTP_500_SERVER_ERROR).send({
+      status: Code.HTTP_500_SERVER_ERROR,
       error: 'Server Error'
     });
   }
@@ -40,10 +40,10 @@ router.post('/', async (req, res, next) => {
 
   try {
     const result = await user.createUser(options);
-    res.status(result.status).send(Common.getResultData(result));
+    res.status(200).send(result);
   } catch (err) {
-    return res.status(500).send({
-      status: 500,
+    return res.status(Code.HTTP_500_SERVER_ERROR).send({
+      status: Code.HTTP_500_SERVER_ERROR,
       error: 'Server Error'
     });
   }
@@ -66,10 +66,10 @@ router.get('/login', async (req, res, next) => {
 
   try {
     const result = await user.loginUser(options);
-    res.status(result.status).send(Common.getResultData(result));
+    res.status(200).send(result);
   } catch (err) {
-    return res.status(500).send({
-      status: 500,
+    return res.status(Code.HTTP_500_SERVER_ERROR).send({
+      status: Code.HTTP_500_SERVER_ERROR,
       error: 'Server Error'
     });
   }
@@ -88,10 +88,10 @@ router.get('/logout', async (req, res, next) => {
 
   try {
     const result = await user.logoutUser(options);
-    res.status(result.status).send(Common.getResultData(result));
+    res.status(200).send(result);
   } catch (err) {
-    return res.status(500).send({
-      status: 500,
+    return res.status(Code.HTTP_500_SERVER_ERROR).send({
+      status: Code.HTTP_500_SERVER_ERROR,
       error: 'Server Error'
     });
   }
@@ -112,10 +112,10 @@ router.get('/recover', async (req, res, next) => {
 
   try {
     const result = await user.recoverPassword(options);
-    res.status(result.status).send(Common.getResultData(result));
+    res.status(200).send(result);
   } catch (err) {
-    return res.status(500).send({
-      status: 500,
+    return res.status(Code.HTTP_500_SERVER_ERROR).send({
+      status: Code.HTTP_500_SERVER_ERROR,
       error: 'Server Error'
     });
   }
