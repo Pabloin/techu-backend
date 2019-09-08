@@ -14,7 +14,10 @@ const mongoose = require('mongoose').set('debug', true)
  */
 module.exports.getTransactionList = async (options) => {
 
-  var  fromAccount = await TransactiontModel.find({ 'accountId' : options.accountId }, {}).exec();
+  var  fromAccount = await TransactiontModel
+                            .find({ 'accountId' : options.accountId }, {})
+                            .sort({timestamp: 'descending'})
+                            .exec();
 
   return {
     status: Code.HTTP_200_OK,
