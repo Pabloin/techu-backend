@@ -108,15 +108,24 @@ simulaConsumoTarjeta = (sueldo, porcentaje) => {
 
   let gasto = (presupuesto, porcentaje) => Number.parseFloat(presupuesto * porcentaje).toFixed(2);
 
+                // -- Cada columna vertical suma 100%, es decir 1
+  let percentR1 = [ 0.40, 0.30, 0.20, 0.10, 0.30, 0.15, 0.10, 0.22, 0.40, 0.21 ]
+  let percentR2 = [ 0.25, 0.20, 0.25, 0.40, 0.20, 0.34, 0.15, 0.44, 0.24, 0.29 ]
+  let percentR3 = [ 0.15, 0.25, 0.15, 0.15, 0.25, 0.16, 0.35, 0.06, 0.16, 0.16 ]
+  let percentR4 = [ 0.12, 0.10, 0.15, 0.15, 0.10, 0.25, 0.20, 0.15, 0.08, 0.08 ]
+  let percentR5 = [ 0.08, 0.15, 0.25, 0.20, 0.15, 0.10, 0.20, 0.15, 0.12, 0.36 ]
+
+  let idx = Common.numeroAleatorio(0, 9)
+
   let presupuestoTotal = gasto(sueldo, porcentaje);
 
   let accountStatus  = {
     tarjetaTotal            : presupuestoTotal,
-    tarjetaRubroViajes      : gasto(presupuestoTotal, 0.40),
-    tarjetaRubroRopa        : gasto(presupuestoTotal, 0.25),
-    tarjetaRubroDiversion   : gasto(presupuestoTotal, 0.15),
-    tarjetaRubroComida      : gasto(presupuestoTotal, 0.12),
-    tarjetaOtros            : gasto(presupuestoTotal, 0.08),
+    tarjetaRubroViajes      : gasto(presupuestoTotal, percentR1[idx] ),
+    tarjetaRubroRopa        : gasto(presupuestoTotal, percentR2[idx] ),
+    tarjetaRubroDiversion   : gasto(presupuestoTotal, percentR3[idx] ),
+    tarjetaRubroComida      : gasto(presupuestoTotal, percentR4[idx] ),
+    tarjetaOtros            : gasto(presupuestoTotal, percentR5[idx] ),
   }
 
   return accountStatus
