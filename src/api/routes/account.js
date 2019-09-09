@@ -32,7 +32,7 @@ router.get('/user/:username', async (req, res, next) => {
     username: req.params['username']
   };
 
-  console.log(`v2 router.get /user/:usernam ${options.username}`);
+  console.log(`v2 router.get /user/:username ${options.username}`);
 
   try {
     const result = await account.getAccountByUsername(options);
