@@ -104,6 +104,24 @@ simulaImporteAcreditacioSueldoInical = () => {
   return 10000 + Common.numeroAleatorio(-3000, 3000)
 }
 
+simulaConsumoTarjeta = (sueldo, porcentaje) => {
+
+  let gasto = (presupuesto, porcentaje) => Number.parseFloat(presupuesto * porcentaje).toFixed(2);
+
+  let presupuestoTotal = gasto(sueldo, porcentaje);
+
+  let accountStatus  = {
+    tarjetaTotal            : presupuestoTotal,
+    tarjetaRubroViajes      : gasto(presupuestoTotal, 0.40),
+    tarjetaRubroRopa        : gasto(presupuestoTotal, 0.25),
+    tarjetaRubroDiversion   : gasto(presupuestoTotal, 0.15),
+    tarjetaRubroComida      : gasto(presupuestoTotal, 0.12),
+    tarjetaOtros            : gasto(presupuestoTotal, 0.08),
+  }
+
+  return accountStatus
+}
+
 
 /**
  * @param {Object} user
@@ -124,6 +142,8 @@ module.exports.createProductsForUser = async (user) => {
   var tarjetaId_tj_master_number = "8802 0000 4321 " + tarjetaId_tj_master;
 
   var sueldoSaldoInicial = simulaImporteAcreditacioSueldoInical()
+  var simulaConsumoTarjetaVisa = simulaConsumoTarjeta(sueldoSaldoInicial, 0.6);
+  var simulaConsumoTarjetaMaster = simulaConsumoTarjeta(sueldoSaldoInicial, 0.2);
 
   var account_ca = {
     userId             : user.userId,
@@ -133,7 +153,10 @@ module.exports.createProductsForUser = async (user) => {
     accountNumber      : accountId_ca,
     accountDV          : 1,
     accountCurrency    : CONST.CUENTA_CURRENCY_ARS,
-    accountBalance     : sueldoSaldoInicial
+    accountBalance     : sueldoSaldoInicial,
+    accountStatus      : {
+      cajaAhorroActiva: true
+    }
   };
 
   var account_cc = {
@@ -144,7 +167,10 @@ module.exports.createProductsForUser = async (user) => {
     accountNumber      : accountId_cc,
     accountDV          : 2,
     accountCurrency    : CONST.CUENTA_CURRENCY_ARS,
-    accountBalance     : 0
+    accountBalance     : 0,
+    accountStatus      : {
+      cuentaCorrienteLimite: 5000
+    }
   };
 
   var account_ca_usd = {
@@ -155,7 +181,10 @@ module.exports.createProductsForUser = async (user) => {
     accountNumber      : accountId_ca_usd,
     accountDV          : 3,
     accountCurrency    : CONST.CUENTA_CURRENCY_USD,
-    accountBalance     : 0
+    accountBalance     : 0,
+    accountStatus      : {
+      cajaAhorroActiva: true
+    }
   };
 
   var tarjeta_tj_visa = {
@@ -166,7 +195,8 @@ module.exports.createProductsForUser = async (user) => {
     accountNumber      : tarjetaId_tj_visa_number,
     accountDV          : '',
     accountCurrency    : '',
-    accountBalance     : 0
+    accountBalance     : simulaConsumoTarjetaVisa.tarjetaTotal,
+    accountStatus      : simulaConsumoTarjetaVisa
   };
 
   var tarjeta_tj_master = {
@@ -177,7 +207,8 @@ module.exports.createProductsForUser = async (user) => {
     accountNumber      : tarjetaId_tj_master_number,
     accountDV          : '',
     accountCurrency    : '',
-    accountBalance     : 0
+    accountBalance     : simulaConsumoTarjetaMaster.tarjetaTotal,
+    accountStatus      : simulaConsumoTarjetaMaster
   };
 
   var arrProductos = [

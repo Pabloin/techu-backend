@@ -48,8 +48,8 @@ var AccountSchema = new Schema({
   accountNumber      : String,
   accountDV          : String,
   accountCurrency    : String,
-  accountBalance     : Number
-
+  accountBalance     : Number,
+  accountStatus      : Object,
 });
 
 
