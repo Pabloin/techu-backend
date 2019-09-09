@@ -105,7 +105,8 @@ module.exports.createUser = async (options) => {
     status: Code.HTTP_201_CREATED_OK,
     data: {
           id_token : id_token,
-      access_token : access_token
+      access_token : access_token,
+              user : getUserToReturn(user)
     }
   };
 
@@ -135,7 +136,7 @@ module.exports.loginUser = async (options) => {
 
   // Paso 2: Chequea que el usuario exista
   var userList = await UserModel
-                    .find({ 'username' : username }, 'userId username password isLogged')
+                    .find({ 'username' : username }, {})
                     .exec();
 
   console.log(`loginUser(${username}) rta = ${JSON.stringify(userList)}`);
@@ -165,10 +166,11 @@ module.exports.loginUser = async (options) => {
     console.log(`OK loginUser(${username}) OK rta = ${JSON.stringify(result)}`);
 
     return {
-      status: Code.HTTP_201_CREATED_OK,
+      status: Code.HTTP_200_OK,
       data: {
             id_token : id_token,
-        access_token : access_token
+        access_token : access_token,
+                user : getUserToReturn(user)
       }
     };
 
@@ -183,6 +185,16 @@ module.exports.loginUser = async (options) => {
     error: `User "${username}" not Authorzed. Login Incorrect.`
   };
 };
+
+getUserToReturn = (userDB) => {
+  return {
+    userId    : userDB.userId,
+    username  : userDB.username,
+    firstName : userDB.firstName,
+    lastName  : userDB.lastName,
+    email     : userDB.email
+  }
+}
 
 /**
  * @param {Object} options
