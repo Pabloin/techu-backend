@@ -40,7 +40,7 @@ router.get('/api-bcra/usd_uf/:select?', async (req, res, next) => {
 
     var tokenBCRA = Common.getTokenApiBCRA_Config();
     var mockBCRA = process.env.Techu_TOKEN_BCRA_API_MOCK
-    if (mockBCRA) {
+    if (mockBCRA === true) {
       throw Error('Mock BCRA Enabled')
     }
 
@@ -64,6 +64,8 @@ router.get('/api-bcra/usd_uf/:select?', async (req, res, next) => {
          res.status(response.statusCode).send(`Code 403: Error Límite de 100 invocaciones x día del BCRA`);
          return;
        }
+
+       let arrRta = JSON.parse(response.body);
      
        let rta = getRtaBCRA(options, arrRta);
 
