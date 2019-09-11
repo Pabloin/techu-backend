@@ -40,7 +40,7 @@ router.get('/api-bcra/usd_uf/:select?', async (req, res, next) => {
 
     var tokenBCRA = Common.getTokenApiBCRA_Config();
     var mockBCRA = process.env.Techu_TOKEN_BCRA_API_MOCK
-    if (mockBCRA === true) {
+    if (mockBCRA == 'true') {
       throw Error('Mock BCRA Enabled')
     }
 
@@ -106,7 +106,13 @@ getRtaBCRA_Mock = (options) => {
 getRtaBCRA = (options, arrRta) => {
   console.log(`getRtaBCRA(${JSON.stringify(options)}, ${arrRta.length})`)
   
-  let dolarData = (options.select === 'last') ? arrRta[arrRta.length - 1] : arrRta
+  let sonYears = (e) => Number.parseInt(e) > 2000 && Number.parseInt(e) < 2020
+  
+  arrRta = arrRta.reverse()
+
+  let dolarData = (options.select === 'last') ? arrRta[0]
+                : (sonYears(options.select)) ? arrRta.filter(e => e.d.includes(options.select) )
+                : arrRta
 
   console.log(`/api-bcra/usd_uf (${JSON.stringify(options)}) dolarData=${dolarData}`)
 
