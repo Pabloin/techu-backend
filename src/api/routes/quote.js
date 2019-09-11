@@ -91,13 +91,27 @@ getRtaBCRA_Mock = (options) => {
   console.log(`getRtaBCRA_Mock(${JSON.stringify(options)})`)
   // Por el caso el limite de consumo de 100 request x dia por Tocken
   let arrRta_Mock = [
+
+    { "d": "2017-02-02", "v": 57.09 },
+    { "d": "2017-02-30", "v": 59.08 },
+    { "d": "2017-04-29", "v": 58.2 },
+    { "d": "2017-04-28", "v": 58.08 },
+    { "d": "2017-04-27", "v": 55.71 },
+    
+    { "d": "2018-05-02", "v": 57.09 },
+    { "d": "2018-06-30", "v": 59.08 },
+    { "d": "2018-06-29", "v": 58.2 },
+    { "d": "2018-08-28", "v": 58.08 },
+    { "d": "2018-08-27", "v": 55.71 },
+
+    { "d": "2019-07-29", "v": 58.2 },
+    { "d": "2019-07-30", "v": 59.08 },
+    { "d": "2019-07-28", "v": 58.08 },
     { "d": "2019-08-26", "v": 55.34 },
     { "d": "2019-08-27", "v": 55.71 },
-    { "d": "2019-08-28", "v": 58.08 },
-    { "d": "2019-08-29", "v": 58.2 },
-    { "d": "2019-08-30", "v": 59.08 },
     { "d": "2019-09-02", "v": 57.09 },
-    { "d": "2019-09-03", "v": 55.78 }
+    { "d": "2019-09-03", "v": 55.78 },
+
   ];
 
   return getRtaBCRA(options, arrRta_Mock)
@@ -111,7 +125,9 @@ getRtaBCRA = (options, arrRta) => {
   arrRta = arrRta.reverse()
 
   let dolarData = (options.select === 'last') ? arrRta[0]
+                : (options.select === 'all') ? arrRta
                 : (sonYears(options.select)) ? arrRta.filter(e => e.d.includes(options.select) )
+                : ((options.select + ' ').length >= 4) ? arrRta.filter(e => e.d.includes(options.select) )
                 : arrRta
 
   console.log(`/api-bcra/usd_uf (${JSON.stringify(options)}) dolarData=${dolarData}`)
